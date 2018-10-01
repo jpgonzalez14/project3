@@ -1,3 +1,6 @@
+//import 'bootstrap/dist/js/bootstrap.bundle';
+//import '/node_modules/bootstrap/dist/css/bootstrap.min.css'
+
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 //react imports
@@ -15,11 +18,11 @@ import Groups from './../imports/ui/ChatService/Groups';
 const routes = (
  <BrowserRouter>
      <Switch>
-         <Route exact path="/" component={NavBar} />
-         <Route exact path="/login" component={Login} />
-         <Route path="/signup" component={Signup} />
-         <Route path="/group" component={Groups} />
-         <Route path="*" component={NotFound} />
+       <Route exact path="/" component={NavBar} />
+       <Route exact path="/login" component={Login} />
+       <Route exact path="/signup" component={Signup} />
+       <Route exact path="/group" component={Groups} />
+       <Route exact path="*" component={NotFound} />
      </Switch>
  </BrowserRouter>
  );

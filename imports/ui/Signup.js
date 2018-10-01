@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 
+import NavBar from './layout/NavBar';
+
 class Signup extends React.Component{
   constructor(props) {
     super(props);
@@ -30,6 +32,7 @@ class Signup extends React.Component{
   render(){
     return (
       <div>
+        <NavBar/>
         <h1>Signup</h1>
         {this.state.error ? <p>{this.state.error}</p> : undefined}
         <form onSubmit={this.onSubmit.bind(this)}>

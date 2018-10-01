@@ -3,6 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import NavBar from './layout/NavBar';
+
+
 class Login extends React.Component{
   constructor(props) {
     super(props);
@@ -22,6 +25,7 @@ class Login extends React.Component{
   render(){
     return(
       <div>
+        <NavBar/>
         <h1>Login</h1>
         {this.state.error ? <p>{this.state.error}</p> : undefined}
         <form onSubmit={this.onSubmit.bind(this)}>
