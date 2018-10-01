@@ -14,7 +14,6 @@ export default class Groups extends React.Component {
       <div>
         <NavBar/>
         <button onClick={this.onLogout.bind(this)}>Logout</button>
-
         <br/>
         <div>
             <ul className="nav nav-pills justify-content-center">
