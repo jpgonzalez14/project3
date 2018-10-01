@@ -16,8 +16,8 @@ class Login extends React.Component{
   onSubmit(e){
     e.preventDefault();
     let email = this.refs.email.value.trim();
-    let password = this.refs.password.value.trim();
-
+    let password = this.refs.password.value;
+    console.log(password);
     Meteor.loginWithPassword({email},{password},(err)=>{
       console.log('login callback', err);
     });
@@ -26,17 +26,24 @@ class Login extends React.Component{
     return(
       <div>
         <NavBar/>
-        <h1>Login</h1>
-        {this.state.error ? <p>{this.state.error}</p> : undefined}
-        <form onSubmit={this.onSubmit.bind(this)}>
-          <input type='email' ref='email' name='email' placeholder='Email'/>
-          <input type='password' ref='password' name='password' placeholder='Password'/>
+        <div className="container">
+          <h1>Login</h1>
+          {this.state.error ? <p>{this.state.error}</p> : undefined}
+          <form onSubmit={this.onSubmit.bind(this)}>
+            <div className="form-group">
+              <label>Email address</label>
+              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email"/>
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input type="password" className="form-control" ref='password' name='password' placeholder="Password"/>
+            </div>
+            <button type="submit" className="btn btn-primary">Login</button>
+          </form>
           <br/>
-          <button>Login</button>
-        </form>
-        <Link to='/signup'>create an account</Link>
+          <Link to='/signup'><small>create an account</small></Link>
+        </div>
       </div>
-
     );
   }
 }

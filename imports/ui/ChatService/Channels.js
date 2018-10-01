@@ -4,14 +4,17 @@ import { Accounts } from 'meteor/accounts-base';
 import Messages from './Messages';
 
 export default class Channels extends React.Component {
-  onLogout(){
-    Accounts.logout();
-  }
+
   render() {
     return (
-      <div>
-        <button onClick={this.onLogout.bind(this)}>Logout</button>
-        <h1>Channels</h1>
+      <div className="row">
+          <div className="card">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">Random</li>
+              <li className="list-group-item">Projects</li>
+              <li className="list-group-item">Add channel</li>
+            </ul>
+          </div>
         <Messages/>
       </div>
     );
