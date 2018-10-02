@@ -9,26 +9,43 @@ export default class Groups extends React.Component {
   onLogout(){
     Accounts.logout();
   }
+  //<button onClick={this.onLogout.bind(this)}>Logout</button>
   render() {
     return (
       <div>
         <NavBar/>
-        <button onClick={this.onLogout.bind(this)}>Logout</button>
         <br/>
-        <div>
-            <ul className="nav nav-pills justify-content-center">
-              <li className="nav-item">
-                <a className="nav-link active" href="#">WebDev</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">BI</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Create group</a>
-              </li>
-            </ul>
+        <div className="row">
+          <div className="col-2">
+            <div className="card my-4">
+              <h5 className="card-header">Channels</h5>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <ul className="list-unstyled mb-0">
+                      <li>
+                        <a href="#">Web Design</a>
+                      </li>
+                      <br/>
+                      <li>
+                        <a href="#">HTML</a>
+                      </li>
+                      <br/>
+                      <li>
+                        <a href="#">Random</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <div className="col-10">
             <Channels/>
+          </div>
+        </div>
+
       </div>
     );
   }

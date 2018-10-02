@@ -7,15 +7,41 @@ export default class Channels extends React.Component {
 
   render() {
     return (
-      <div className="row">
-          <div className="card">
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">Random</li>
-              <li className="list-group-item">Projects</li>
-              <li className="list-group-item">Add channel</li>
-            </ul>
-          </div>
+      <div className="container-fluid row">
+        <div className="col-9">
         <Messages/>
+        </div>
+        <div className="col-3">
+          <div className="card my-4">
+            <h5 className="card-header">Channels</h5>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-lg-6">
+                  <ul className="list-unstyled mb-0">
+                    <li>
+                      <a href="#">Web Design</a>
+                    </li>
+                    <br/>
+                    <li>
+                      <a href="#">HTML</a>
+                    </li>
+                    <br/>
+                    <li>
+                      <a href="#">Random</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card my-4">
+            <h5 className="card-header">Description</h5>
+            <div className="card-body">
+              Here you can find the channel description
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
