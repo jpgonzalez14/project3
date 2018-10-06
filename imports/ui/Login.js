@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import NavBar from './layout/NavBar';
+import Footer from './layout/Footer';
 
 
 class Login extends React.Component{
@@ -48,6 +49,10 @@ class Login extends React.Component{
           <br/>
           <Link to='/signup'><small>create an account</small></Link>
         </div>
+        <br/>
+        <br/>
+        <br/>
+        <Footer/>
       </div>
     );
   }

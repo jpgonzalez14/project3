@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import NavBar from './../layout/NavBar';
+import Footer from './../layout/Footer';
 
 import Channels from './Channels';
 
@@ -16,7 +17,7 @@ export default class Groups extends React.Component {
         <div className="row">
           <div className="col-2">
             <div className="card my-4">
-              <h5 className="card-header">Channels</h5>
+              <h5 className="card-header">Groups</h5>
               <div className="card-body">
                 <div className="row">
                   <div className="col-lg-6">
@@ -43,7 +44,9 @@ export default class Groups extends React.Component {
             <Channels/>
           </div>
         </div>
-
+        <br/>
+        <br/>
+        <Footer/>
       </div>
     );
   }

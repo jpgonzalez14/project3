@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 
 import NavBar from './layout/NavBar';
+import Footer from './layout/Footer';
 
 class Signup extends React.Component{
   constructor(props) {
@@ -68,6 +69,8 @@ class Signup extends React.Component{
           <br/>
           <Link to='/login'><small>already have an account?</small></Link>
         </div>
+        <br/>
+        <Footer/>
       </div>
     );
   }
