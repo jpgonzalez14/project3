@@ -31,6 +31,7 @@ class Login extends React.Component{
       <div>
         <NavBar/>
         <div className="container">
+        <br/>
           <h1>Login</h1>
           {this.state.error ? <div className="alert alert-danger" role="alert">{this.state.error}</div> : undefined}
           <form onSubmit={this.onSubmit.bind(this)}>

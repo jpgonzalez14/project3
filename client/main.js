@@ -12,7 +12,7 @@ import createHistory from 'history/createBrowserHistory';
 import Signup from './../imports/ui/Signup';
 import Login from './../imports/ui/Login';
 import NotFound from './../imports/ui/layout/NotFound';
-import NavBar from './../imports/ui/layout/NavBar';
+import Landing from './../imports/ui/layout/Landing';
 import Groups from './../imports/ui/ChatService/Groups';
 
 const history = createHistory();
@@ -24,7 +24,7 @@ let isAuthenticatedPage = false;
 const routes = (
  <Router history={history}>
      <Switch>
-       <Route exact path="/" component={NavBar} />
+       <Route exact path="/" component={Landing} />
        <Route exact path="/login" component={Login} />
        <Route exact path="/signup" component={Signup} />
        <Route exact path="/group" component={Groups} />
