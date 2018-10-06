@@ -27,8 +27,11 @@ class Signup extends React.Component{
       roles = 'Estudent';
     }
     Accounts.createUser({email, password, roles}, (err) => {
-      console.log('signup callback', err);
-
+      if (err) {
+        this.setState({error: err.reason});
+      } else {
+        this.setState({error: ''});
+      }
     });
   }
   render(){
@@ -37,7 +40,7 @@ class Signup extends React.Component{
         <NavBar/>
         <div className="container">
           <h1>Signup</h1>
-          {this.state.error ? <p>{this.state.error}</p> : undefined}
+          {this.state.error ? <div className="alert alert-danger" role="alert">{this.state.error}</div> : undefined}
           <form onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
               <label>Email address</label>
