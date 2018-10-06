@@ -6,15 +6,12 @@ import NavBar from './../layout/NavBar';
 import Channels from './Channels';
 
 export default class Groups extends React.Component {
-  onLogout(){
-    Accounts.logout();
-  }
+
   render() {
     return (
       <div>
         <NavBar/>
         <br/>
-        <button onClick={this.onLogout.bind(this)}>Logout</button>
 
         <div className="row">
           <div className="col-2">
