@@ -3,5 +3,9 @@ import {withTracker} from 'meteor/react-meteor-data';
 
 
 export default withTracker(() => {
-    return {calendar: Calendar.find({})};
+    Meteor.subscribe('calendar');
+    return {
+        calendar: Calendar.find({}).fetch,
+        user: Meteor.user()
+    };
 })(Calendar); 
