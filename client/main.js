@@ -3,7 +3,7 @@ import { Tracker } from 'meteor/tracker';
 //react imports
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Switch, Route } from 'react-router';
+import { Switch, Route, Router } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 
 import createHistory from 'history/createBrowserHistory';
@@ -22,7 +22,7 @@ let isUnauthenticatedPage = true;
 let isAuthenticatedPage = false;
 
 const routes = (
- <BrowserRouter>
+ <Router history={history}>
      <Switch>
        <Route exact path="/" component={NavBar} />
        <Route exact path="/login" component={Login} />
@@ -30,7 +30,7 @@ const routes = (
        <Route exact path="/group" component={Groups} />
        <Route exact path="*" component={NotFound} />
      </Switch>
- </BrowserRouter>
+ </Router>
  );
 
 Tracker.autorun(() => {

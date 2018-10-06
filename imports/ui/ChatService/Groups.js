@@ -9,12 +9,13 @@ export default class Groups extends React.Component {
   onLogout(){
     Accounts.logout();
   }
-  //<button onClick={this.onLogout.bind(this)}>Logout</button>
   render() {
     return (
       <div>
         <NavBar/>
         <br/>
+        <button onClick={this.onLogout.bind(this)}>Logout</button>
+
         <div className="row">
           <div className="col-2">
             <div className="card my-4">
