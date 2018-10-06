@@ -24,7 +24,7 @@ Meteor.methods({
         tasks.remove(taskID);
     },
     'tasks.get'(groupID) {
-        tasks.find({ groupID });
+        return tasks.find({ groupID });
     }
 
 });

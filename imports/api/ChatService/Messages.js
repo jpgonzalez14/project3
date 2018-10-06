@@ -24,7 +24,7 @@ Meteor.methods({
         Messages.remove(messageID);
     },
     'messages.get'(channelID) {
-        Messages.find({ channelID });
+        return Messages.find({ channelID });
     }
 
 });

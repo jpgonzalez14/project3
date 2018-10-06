@@ -24,7 +24,7 @@ Meteor.methods({
         Groups.remove(groupID);
     },
     'groups.get'(groups) {
-        Groups.find({ _id: {$in: groups} });
+        return Groups.find({ _id:  {$in: groups} });
     }
 
 });

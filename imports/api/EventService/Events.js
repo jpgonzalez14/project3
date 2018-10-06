@@ -19,12 +19,13 @@ Meteor.methods({
                 description,
                 date
             });
+       //return Events.findOne({eventID});
     },
     'events.remove'(eventID) {
         Events.remove(eventID);
     },
     'events.get'(groupID) {
-        Events.find({ groupID });
+        return Events.find({ groupID });
     }
 
 });

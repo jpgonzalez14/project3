@@ -23,7 +23,7 @@ Meteor.methods({
         Channels.remove(channelID);
     },
     'channels.get'(groupID) {
-        Channels.find({ groupID });
+        return Channels.find({ groupID });
     }
 
 });
