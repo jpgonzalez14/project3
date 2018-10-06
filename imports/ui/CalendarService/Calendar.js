@@ -1,4 +1,4 @@
-import {Calendar} from '../imports/api/CalendarService/Calendar.js';
+import {Calendar} from '../imports/api/EventService/Calendar';
 import {withTracker} from 'meteor/react-meteor-data';
 
 
@@ -8,4 +8,4 @@ export default withTracker(() => {
         calendar: Calendar.find({}).fetch,
         user: Meteor.user()
     };
-})(Calendar); 
+})(Calendar);
