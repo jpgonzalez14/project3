@@ -15,7 +15,7 @@ class Signup extends React.Component{
     e.preventDefault();
 
     let email = this.refs.email.value.trim();
-    let password = this.refs.password.value;
+    let password = this.refs.password.value.trim();
     console.log(password);
 
     let roles;
