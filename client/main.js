@@ -1,6 +1,3 @@
-//import 'bootstrap/dist/js/bootstrap.bundle';
-//import '/node_modules/bootstrap/dist/css/bootstrap.min.css'
-
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 //react imports
@@ -8,12 +5,21 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { Switch, Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+
+import createHistory from 'history/createBrowserHistory';
+
 //component imports
 import Signup from './../imports/ui/Signup';
 import Login from './../imports/ui/Login';
 import NotFound from './../imports/ui/layout/NotFound';
 import NavBar from './../imports/ui/layout/NavBar';
 import Groups from './../imports/ui/ChatService/Groups';
+
+const history = createHistory();
+const unauthenticatedPages = ['/', '/signup', '/login'];
+const authenticatedPages = ['/group'];
+let isUnauthenticatedPage = true;
+let isAuthenticatedPage = false;
 
 const routes = (
  <BrowserRouter>
@@ -29,7 +35,16 @@ const routes = (
 
 Tracker.autorun(() => {
   const isAuthenticated = !!Meteor.userId();
+  const pathname = history.location.pathname;
+  const isUnauthenticatedPage = unauthenticatedPages.includes(pathname);
+  const isAuthenticatedPage = authenticatedPages.includes(pathname);
+  console.log('pathname: ', history.location.pathname);
   console.log('isAuthenticated', isAuthenticated);
+  if (isUnauthenticatedPage && isAuthenticated) {
+    history.push('/group');
+  } else if (isAuthenticatedPage && !isAuthenticated) {
+    history.push('/');
+  }
 });
 
 Meteor.startup(() => {
