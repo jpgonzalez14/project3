@@ -14,10 +14,11 @@ import Login from './../imports/ui/Login';
 import NotFound from './../imports/ui/layout/NotFound';
 import Landing from './../imports/ui/layout/Landing';
 import Groups from './../imports/ui/ChatService/Groups';
+import CalendarUi from './../imports/ui/CalendarService/CalendarUi';
 
 const history = createHistory();
 const unauthenticatedPages = ['/', '/signup', '/login'];
-const authenticatedPages = ['/group'];
+const authenticatedPages = ['/group', '/calendar'];
 let isUnauthenticatedPage = true;
 let isAuthenticatedPage = false;
 
@@ -28,6 +29,7 @@ const routes = (
        <Route exact path="/login" component={Login} />
        <Route exact path="/signup" component={Signup} />
        <Route exact path="/group" component={Groups} />
+       <Route exact path="/calendar" component={CalendarUi} />
        <Route exact path="*" component={NotFound} />
      </Switch>
  </Router>
