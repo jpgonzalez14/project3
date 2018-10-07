@@ -4,27 +4,30 @@ import { Meteor } from 'meteor/meteor';
 export const Groups = new Mongo.Collection('groups');
 
 Meteor.methods({
-    'groups.upsert'(name, description, teachers, students) {
+    'groups.insert'(name, description, teachers, students) {
 
         // Make sure the user is logged in before inserting a task
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
 
-        Groups.upsert(
-            { groupID },
+        let groupID = Groups.insert(
             {
+                owner: this.userId,
                 name,
                 description,
                 teachers,
                 students
             });
+        return Groups.findOne({_id: groupID});
     },
     'groups.remove'(groupID) {
         Groups.remove(groupID);
     },
-    'groups.get'(groups) {
-        return Groups.find({ _id:  {$in: groups} });
+    'groups.getAll'() {
+        let userGroups = Groups.find({ owner: this.userId });
+        if (userGroups) return userGroups.fetch();
+        else return [];
     }
 
 });

@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 export const Events = new Mongo.Collection('events');
 
 Meteor.methods({
-    'events.upsert'(groupID, title, description, date) {
+    'events.upsert'(eventID, title, start, end) {
 
         // Make sure the user is logged in before inserting a task
         if (!this.userId) {
@@ -14,18 +14,18 @@ Meteor.methods({
         Events.upsert(
             { eventID },
             {
-                groupID,
+                owner: this.userId,
                 title,
-                description,
-                date
+                start,
+                end
             });
        //return Events.findOne({eventID});
     },
     'events.remove'(eventID) {
         Events.remove(eventID);
     },
-    'events.get'(groupID) {
-        return Events.find({ groupID });
+    'events.getAll'() {
+        return Events.find({ owner: this.userId });
     }
 
 });

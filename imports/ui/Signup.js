@@ -21,12 +21,12 @@ class Signup extends React.Component {
     console.log(password);
 
     let roles;
-    if (this.refs.estudent.value !== undefined) {
-      roles = this.refs.estudent.value;
+    if (this.refs.student.value !== undefined) {
+      roles = this.refs.student.value;
     } else if (this.refs.teacher.value !== undefined) {
       roles = this.refs.teacher.value;
     } else {
-      roles = 'Estudent';
+      roles = 'Student';
     }
     let groups = [];
     Accounts.createUser({ name, email, password, roles, groups }, (err) => {
@@ -62,7 +62,7 @@ class Signup extends React.Component {
             </div>
 
             <div className="form-check form-check-inline">
-              <input type="checkbox" className="form-check-input" ref='estudent' name="estudent" value="Estudent" checked={true}/>
+              <input type="checkbox" className="form-check-input" ref='student' name="student" value="Student" checked={true}/>
               <label className="form-check-label">I am a student</label>
             </div>
             <div className="form-check form-check-inline">

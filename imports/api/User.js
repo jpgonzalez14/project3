@@ -15,6 +15,7 @@ Meteor.methods({
         Users.upsert(
             { email },
             {
+                userID: this.userId,
                 name,
                 email,
                 role,
@@ -25,7 +26,13 @@ Meteor.methods({
         Users.remove(userID);
     },
     'users.getGroups'(email) {
-        return Users.findOne({ email}).groups;
+        return Users.findOne({email}).groups;
+    },
+    'users.getUser'(userID) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        return Users.findOne({userID});
     }
 
 });
