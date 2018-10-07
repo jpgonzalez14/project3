@@ -17,6 +17,7 @@ class Signup extends React.Component {
 
     let email = this.refs.email.value.trim();
     let password = this.refs.password.value.trim();
+    let name = this.refs.name.value.trim();
     console.log(password);
 
     let roles;
@@ -27,12 +28,13 @@ class Signup extends React.Component {
     } else {
       roles = 'Estudent';
     }
-    Accounts.createUser({ name, email, password, roles }, (err) => {
+    let groups = [];
+    Accounts.createUser({ name, email, password, roles, groups }, (err) => {
       if (err) {
         this.setState({ error: err.reason });
       } else {
         this.setState({ error: '' });
-        Meteor.call('users.upsert', name, email, roles, []);
+        Meteor.call('users.upsert', name, email, roles, groups);
       }
     });
   }
@@ -47,20 +49,20 @@ class Signup extends React.Component {
           <form onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
               <label>Name</label>
-              <input type="text" className="form-control" ref='name' name='name' placeholder="Enter name" />
+              <input type="text" className="form-control" ref='name' name='name' placeholder="Enter name" required/>
             </div>
             <div className="form-group">
               <label>Email address</label>
-              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email" />
+              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email" required/>
               <small className="form-text text-muted">We will never share your email with anyone else.</small>
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input type="password" className="form-control" ref='password' name='password' placeholder="Password" />
+              <input type="password" className="form-control" ref='password' name='password' placeholder="Password" required/>
             </div>
 
             <div className="form-check form-check-inline">
-              <input type="checkbox" className="form-check-input" ref='estudent' name="estudent" value="Estudent" />
+              <input type="checkbox" className="form-check-input" ref='estudent' name="estudent" value="Estudent" checked={true}/>
               <label className="form-check-label">I am a student</label>
             </div>
             <div className="form-check form-check-inline">
