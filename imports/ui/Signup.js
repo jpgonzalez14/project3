@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
-import '../api/User.js';
 import NavBar from './layout/NavBar';
 import Footer from './layout/Footer';
-import { Users } from '../api/User.js';
+
 
 class Signup extends React.Component {
   constructor(props) {
@@ -33,7 +32,7 @@ class Signup extends React.Component {
         this.setState({ error: err.reason });
       } else {
         this.setState({ error: '' });
-        Meteor.call('users.upsert', name, email, roles, [])
+        Meteor.call('users.upsert', name, email, roles, []);
       }
     });
   }
