@@ -11,8 +11,10 @@ export default class Groups extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { role: 'Teacher' },
-      groups: []
+      user: {},
+      groups: [],
+      currentGroup: {},
+      currentChannel: {}
     };
   }
 
@@ -35,8 +37,8 @@ export default class Groups extends React.Component {
   createGroup() {
     let user = this.state.user;
     console.log(user.role);
-    let name = prompt('Enter Group Name');
-    let description = 'generic group description';
+    let name = prompt('Enter Group Name to Create');
+    let description = prompt('Enter Group Description');
     this.state.groups.push(name);
     let teachers = [];
     let students = [];
@@ -44,11 +46,14 @@ export default class Groups extends React.Component {
     Meteor.call('groups.insert', name, description, teachers, students, (err, rgroup) => {
       if (err) { console.log(err); return; }
       this.state.groups.push(rgroup);
-      this.setState({ groups: this.state.groups })
+      this.forceUpdate();
     });
   }
 
-
+  deleteGroup() {
+    let groupName = prompt('Enter Group Name to Delete');
+    
+  }
 
   render() {
     return (
@@ -56,6 +61,7 @@ export default class Groups extends React.Component {
         <NavBar />
         <br />
         <div className='container'>
+          <div><h2>Welcome, {this.state.user.username}</h2></div>
           <div className="row">
             <div className="col-2">
               <div className="card">
@@ -67,6 +73,7 @@ export default class Groups extends React.Component {
                         {this.state.groups.map((e, i) => <li key={i}><a href="#">{e.name}</a></li>)}
                       </ul>
                       <button onClick={() => this.createGroup()} className="btn btn-primary">Create Group +</button>
+                      {this.state.groups && this.state.groups.length && <button onClick={() => this.deleteGroup()} className="btn btn-danger">Delete Group -</button>}
                     </div>
                   </div>
                 </div>
@@ -75,7 +82,7 @@ export default class Groups extends React.Component {
                 <h5 className="card-header">Description</h5>
                 <div className="card-body">
                   Here you can find the group description
-            </div>
+                </div>
               </div>
             </div>
 

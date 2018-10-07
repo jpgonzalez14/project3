@@ -9,7 +9,8 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: ''
+      error: '',
+      role: 'Student'
     };
   }
   onSubmit(e) {
@@ -20,14 +21,7 @@ class Signup extends React.Component {
     let name = this.refs.name.value.trim();
     console.log(password);
 
-    let roles;
-    if (this.refs.student.value !== undefined) {
-      roles = this.refs.student.value;
-    } else if (this.refs.teacher.value !== undefined) {
-      roles = this.refs.teacher.value;
-    } else {
-      roles = 'Student';
-    }
+    let roles = this.refs.role.value;
     let groups = [];
     Accounts.createUser({ name, email, password, roles, groups }, (err) => {
       if (err) {
@@ -38,6 +32,7 @@ class Signup extends React.Component {
       }
     });
   }
+
   render() {
     return (
       <div>
@@ -49,25 +44,23 @@ class Signup extends React.Component {
           <form onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
               <label>Name</label>
-              <input type="text" className="form-control" ref='name' name='name' placeholder="Enter name" required/>
+              <input type="text" className="form-control" ref='name' name='name' placeholder="Enter name" required />
             </div>
             <div className="form-group">
               <label>Email address</label>
-              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email" required/>
+              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email" required />
               <small className="form-text text-muted">We will never share your email with anyone else.</small>
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input type="password" className="form-control" ref='password' name='password' placeholder="Password" required/>
+              <input type="password" className="form-control" ref='password' name='password' placeholder="Password" required />
             </div>
-
-            <div className="form-check form-check-inline">
-              <input type="checkbox" className="form-check-input" ref='student' name="student" value="Student" checked={true}/>
-              <label className="form-check-label">I am a student</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input type="checkbox" className="form-check-input" ref='teacher' name="teacher" value="Teacher" />
-              <label className="form-check-label">I am a teacher</label>
+            <div className="form-group">
+              <label>Role</label>
+              <select className="form-control" ref='role' name='role' required>
+                <option value="Student">I am a Student</option>
+                <option value="Teacher">I am a Teacher</option>
+              </select>
             </div>
             <br />
             <br />
