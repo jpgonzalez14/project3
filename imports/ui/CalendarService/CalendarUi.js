@@ -9,6 +9,7 @@ import events from './Events';
 
 import NavBar from './../layout/NavBar';
 import Footer from './../layout/Footer';
+import TasksUi from './TasksUi';
 
 
 const propTypes = {};
@@ -45,18 +46,23 @@ class CalendarUi extends React.Component {
       <div>
         <NavBar/>
         <br/>
-        <div className='offset-1 col-7 calendar'>
-          <BigCalendar
-            selectable
-            localizer={localizer}
-            views={["week", "day"]}
-            events={this.state.events}
-            defaultView={BigCalendar.Views.WEEK}
-            scrollToTime={new Date(2017, 1, 1, 6)}
-            defaultDate={new Date(today.getFullYear(), today.getDate(), today.getMonth()+1)}
-            onSelectEvent={event => alert(event.title)}
-            onSelectSlot={this.handleSelect}
-          />
+        <div className='row'>
+          <div className='offset-1 col-7 calendar'>
+            <BigCalendar
+              selectable
+              localizer={localizer}
+              views={["week", "day"]}
+              events={this.state.events}
+              defaultView={BigCalendar.Views.WEEK}
+              scrollToTime={new Date(2017, 1, 1, 6)}
+              defaultDate={new Date(today.getFullYear(), today.getDate(), today.getMonth()+1)}
+              onSelectEvent={event => alert(event.title)}
+              onSelectSlot={this.handleSelect}
+            />
+          </div>
+          <div className='col-3'>
+            <TasksUi/>
+          </div>
         </div>
         <br/>
         <Footer/>
