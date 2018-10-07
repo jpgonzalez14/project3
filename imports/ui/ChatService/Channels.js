@@ -12,11 +12,11 @@ export default class Channels extends React.Component {
         <Messages/>
         </div>
         <div className="col-3">
-          <div className="card my-4">
+          <div className="card">
             <h5 className="card-header">Channels</h5>
             <div className="card-body">
               <div className="row">
-                <div className="col-lg-6">
+                <div className="col-lg-12">
                   <ul className="list-unstyled mb-0">
                     <li>
                       <a href="#">Web Design</a>

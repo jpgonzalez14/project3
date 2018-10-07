@@ -45,7 +45,7 @@ class CalendarUi extends React.Component {
       <div>
         <NavBar/>
         <br/>
-        <div className='calendar'>
+        <div className='offset-1 col-7 calendar'>
           <BigCalendar
             selectable
             localizer={localizer}
