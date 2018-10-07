@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
-
+import '../api/User.js';
 import NavBar from './layout/NavBar';
 import Footer from './layout/Footer';
+import { Users } from '../api/User.js';
 
-class Signup extends React.Component{
+class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       error: ''
     };
   }
-  onSubmit(e){
+  onSubmit(e) {
     e.preventDefault();
 
     let email = this.refs.email.value.trim();
@@ -27,50 +28,55 @@ class Signup extends React.Component{
     } else {
       roles = 'Estudent';
     }
-    Accounts.createUser({email, password, roles}, (err) => {
+    Accounts.createUser({ name, email, password, roles }, (err) => {
       if (err) {
-        this.setState({error: err.reason});
+        this.setState({ error: err.reason });
       } else {
-        this.setState({error: ''});
+        this.setState({ error: '' });
+        Meteor.call('users.upsert', name, email, roles, [])
       }
     });
   }
-  render(){
+  render() {
     return (
       <div>
-        <NavBar/>
+        <NavBar />
         <div className="container">
-        <br/>
+          <br />
           <h1>Signup</h1>
           {this.state.error ? <div className="alert alert-danger" role="alert">{this.state.error}</div> : undefined}
           <form onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
+              <label>Name</label>
+              <input type="text" className="form-control" ref='name' name='name' placeholder="Enter name" />
+            </div>
+            <div className="form-group">
               <label>Email address</label>
-              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email"/>
+              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email" />
               <small className="form-text text-muted">We will never share your email with anyone else.</small>
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input type="password" className="form-control" ref='password' name='password' placeholder="Password"/>
+              <input type="password" className="form-control" ref='password' name='password' placeholder="Password" />
             </div>
 
             <div className="form-check form-check-inline">
-              <input type="checkbox" className="form-check-input" ref='estudent' name="estudent" value="Estudent"/>
+              <input type="checkbox" className="form-check-input" ref='estudent' name="estudent" value="Estudent" />
               <label className="form-check-label">I am a student</label>
             </div>
             <div className="form-check form-check-inline">
-              <input type="checkbox" className="form-check-input" ref='teacher' name="teacher" value="Teacher"/>
+              <input type="checkbox" className="form-check-input" ref='teacher' name="teacher" value="Teacher" />
               <label className="form-check-label">I am a teacher</label>
             </div>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <button type="submit" className="btn btn-primary">Create account</button>
           </form>
-          <br/>
+          <br />
           <Link to='/login'><small>already have an account?</small></Link>
         </div>
-        <br/>
-        <Footer/>
+        <br />
+        <Footer />
       </div>
     );
   }

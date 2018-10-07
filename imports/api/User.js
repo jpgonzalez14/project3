@@ -2,7 +2,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 
-export const Users = new Mongo.Collection('user');
+export const Users = new Mongo.Collection('usersAux');
 
 Meteor.methods({
     'users.upsert'(name, email, role, groups) {
@@ -25,7 +25,7 @@ Meteor.methods({
         Users.remove(userID);
     },
     'users.getGroups'(email) {
-        return Users.find({ email}).groups;
+        return Users.findOne({ email}).groups;
     }
 
 });

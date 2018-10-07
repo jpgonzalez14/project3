@@ -13,7 +13,7 @@ export default class Groups extends React.Component {
       <div>
         <NavBar/>
         <br/>
-
+        <h2>Name</h2>
         <div className="row">
           <div className="col-2">
             <div className="card my-4">
@@ -26,7 +26,7 @@ export default class Groups extends React.Component {
                         <a href="#">Web Design</a>
                       </li>
                       <br/>
-                      <li>
+                      <li> 
                         <a href="#">HTML</a>
                       </li>
                       <br/>
