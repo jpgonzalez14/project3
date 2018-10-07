@@ -11,7 +11,7 @@ export default class Groups extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { role: 'Teacher'},
+      user: { role: 'Teacher' },
       groups: []
     };
   }
@@ -19,13 +19,13 @@ export default class Groups extends React.Component {
   componentDidMount() {
     Meteor.call('users.getUser', Meteor.userId(), (err, ruser) => {
       console.log(Meteor.userId());
-      if (err) {console.log(err); return;}
+      if (err) { console.log(err); return; }
       this.setState({
         user: { role: ruser.role, username: ruser.name },
       });
     });
     Meteor.call('groups.getAll', (err, rgroups) => {
-      if (err) {console.log(err); return;}
+      if (err) { console.log(err); return; }
       this.setState({
         groups: rgroups
       });
@@ -42,9 +42,9 @@ export default class Groups extends React.Component {
     let students = [];
     user.role === 'student' ? students.push(user.username) : teachers.push(user.username);
     Meteor.call('groups.insert', name, description, teachers, students, (err, rgroup) => {
-      if (err) {console.log(err); return;}
+      if (err) { console.log(err); return; }
       this.state.groups.push(rgroup);
-      this.setState({groups: this.state.groups})
+      this.setState({ groups: this.state.groups })
     });
   }
 
@@ -55,32 +55,33 @@ export default class Groups extends React.Component {
       <div>
         <NavBar />
         <br />
-        <h2>{this.state.user.username}</h2>
-        <div className="row">
-          <div className="col-2">
-            <div className="card my-4">
-              <h5 className="card-header">Groups</h5>
-              <div className="card-body">
-                <div className="row">
-                  <div className="col-lg-6">
-                    <ul className="list-unstyled mb-0">
-                      {this.state.groups.map((e,i) => <li key={i}><a href="#">{e.name}</a></li>)}
-                    </ul>
-                    <button onClick={() => this.createGroup()} className="btn btn-primary">Create Group +</button>
+        <div className='container'>
+          <div className="row">
+            <div className="col-2">
+              <div className="card">
+                <h5 className="card-header">Groups</h5>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <ul className="list-unstyled mb-0">
+                        {this.state.groups.map((e, i) => <li key={i}><a href="#">{e.name}</a></li>)}
+                      </ul>
+                      <button onClick={() => this.createGroup()} className="btn btn-primary">Create Group +</button>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="card my-4">
+                <h5 className="card-header">Description</h5>
+                <div className="card-body">
+                  Here you can find the group description
             </div>
-            <div className="card my-4">
-              <h5 className="card-header">Description</h5>
-              <div className="card-body">
-                Here you can find the group description
+              </div>
             </div>
-            </div>
-          </div>
 
-          <div className="col-10">
-            <Channels />
+            <div className="col-10">
+              <Channels />
+            </div>
           </div>
         </div>
         <br />

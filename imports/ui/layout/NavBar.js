@@ -22,6 +22,12 @@ export default class NavBar extends React.Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
+                <Link className="nav-link" to='/group'>Groups</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to='/calendar'>Calendar</Link>
+              </li>
+              <li className="nav-item">
                 <span className="nav-link" onClick={this.onLogout.bind(this)}>Logout</span>
               </li>
             </ul>

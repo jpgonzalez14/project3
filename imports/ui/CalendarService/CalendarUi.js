@@ -37,19 +37,23 @@ class CalendarUi extends React.Component {
 
   render() {
     //const { localizer } = this.props
+    let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
+    console.log(allViews);
+    var today = new Date();
     const localizer = BigCalendar.momentLocalizer(moment);
     return (
       <div>
         <NavBar/>
         <br/>
-        <div className='container'>
+        <div className='offset-1 col-7 calendar'>
           <BigCalendar
             selectable
             localizer={localizer}
+            views={["week", "day"]}
             events={this.state.events}
             defaultView={BigCalendar.Views.WEEK}
-            scrollToTime={new Date(1970, 1, 1, 6)}
-            defaultDate={new Date(2015, 3, 12)}
+            scrollToTime={new Date(2017, 1, 1, 6)}
+            defaultDate={new Date(today.getFullYear(), today.getDate(), today.getMonth()+1)}
             onSelectEvent={event => alert(event.title)}
             onSelectSlot={this.handleSelect}
           />
