@@ -39,6 +39,7 @@ Tracker.autorun(() => {
   const isUnauthenticatedPage = unauthenticatedPages.includes(pathname);
   const isAuthenticatedPage = authenticatedPages.includes(pathname);
   console.log('pathname: ', history.location.pathname);
+  console.log('isAuthenticatedPage', isAuthenticated ? isAuthenticated : isUnauthenticatedPage);
   console.log('isAuthenticated', isAuthenticated);
   if (isUnauthenticatedPage && isAuthenticated) {
     history.push('/group');
