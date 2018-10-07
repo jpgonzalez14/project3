@@ -16,6 +16,7 @@ Meteor.methods({
             {
                 owner: this.userId,
                 title,
+                desc,
                 start,
                 end
             });

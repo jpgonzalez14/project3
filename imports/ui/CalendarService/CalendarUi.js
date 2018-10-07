@@ -19,10 +19,12 @@ class CalendarUi extends React.Component {
     super(...args);
 
     this.state = { events };
+    console.log(this.state);
   }
 
   handleSelect = ({ start, end }) => {
-    const title = window.prompt('New Event name')
+    const title = window.prompt('New Event name:');
+    const desc = window.prompt('Enter description:');
     if (title)
       this.setState({
         events: [
@@ -31,15 +33,14 @@ class CalendarUi extends React.Component {
             start,
             end,
             title,
+            desc,
           },
         ],
       });
   }
 
   render() {
-    //const { localizer } = this.props
-    let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
-    console.log(allViews);
+
     var today = new Date();
     const localizer = BigCalendar.momentLocalizer(moment);
     return (
@@ -47,7 +48,7 @@ class CalendarUi extends React.Component {
         <NavBar/>
         <br/>
         <div className='row'>
-          <div className='offset-1 col-7 calendar'>
+          <div className='offset-1 col-10 calendar'>
             <BigCalendar
               selectable
               localizer={localizer}
@@ -56,12 +57,9 @@ class CalendarUi extends React.Component {
               defaultView={BigCalendar.Views.WEEK}
               scrollToTime={new Date(2017, 1, 1, 6)}
               defaultDate={new Date(today.getFullYear(), today.getDate(), today.getMonth()+1)}
-              onSelectEvent={event => alert(event.title)}
+              onSelectEvent={event => alert('Name: ' + event.title + '\n' + 'Description: ' + event.desc)}
               onSelectSlot={this.handleSelect}
             />
-          </div>
-          <div className='col-3'>
-            <TasksUi/>
           </div>
         </div>
         <br/>
