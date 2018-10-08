@@ -15,7 +15,8 @@ export default class Groups extends React.Component {
       groups: [],
       groupChannels: [],
       currentGroup: {},
-      currentChannel: {}
+      currentChannel: {},
+      chatHistory: []
     };
   }
 
@@ -44,7 +45,6 @@ export default class Groups extends React.Component {
     if (!description) return;
     name = name.trim();
     description = description.trim();
-    this.state.groups.push(name);
     let teachers = [];
     let students = [];
     user.role === 'student' ? students.push(user.username) : teachers.push(user.username);
@@ -81,6 +81,15 @@ export default class Groups extends React.Component {
     this.setState({ currentGroup: group });
   }
 
+  changeState(newState) {
+    this.setState(newState);
+  }
+
+  renderChannels() {
+    return (<Channels user={this.state.user} groups={this.state.groups} groupChannels={this.state.groupChannels} currentChannel={this.state.currentChannel}
+    currentGroup={this.state.currentGroup} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)}/>);
+  }
+
   render() {
     return (
       <div>
@@ -98,7 +107,7 @@ export default class Groups extends React.Component {
                       <ul className="list-unstyled mb-0">
                         {this.state.groups.map((e, i) => <li key={i}><a href="#" onClick={() => this.setCurrent(e)}>{e.name}</a></li>)}
                       </ul>
-                      <button onClick={() => this.createGroup()} className="btn btn-primary">Create Group +</button>
+                      <button onClick={() => this.createGroup()} className="btn btn-success">Create Group +</button>
                       <button hidden={this.state.groups && this.state.groups.length === 0} onClick={() => this.deleteGroup()} className="btn btn-danger">Delete Group -</button>
                     </div>
                   </div>
@@ -113,7 +122,7 @@ export default class Groups extends React.Component {
             </div>
 
             <div className="col-10">
-              <Channels />
+              {this.renderChannels()}
             </div>
           </div>
         </div>
