@@ -5,6 +5,26 @@ import Messages from './Messages';
 
 export default class Channels extends React.Component {
 
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+
+  }
+
+  createChannel() {
+
+  }
+
+  deleteChannel() {
+
+  }
+
+  setCurrent() {
+    
+  }
+
   render() {
     return (
       <div className="container-fluid row">

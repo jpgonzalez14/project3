@@ -13,6 +13,7 @@ export default class Groups extends React.Component {
     this.state = {
       user: {},
       groups: [],
+      groupChannels: [],
       currentGroup: {},
       currentChannel: {}
     };
@@ -28,17 +29,21 @@ export default class Groups extends React.Component {
     });
     Meteor.call('groups.getAll', (err, rgroups) => {
       if (err) { console.log(err); return; }
-      this.setState({
-        groups: rgroups
-      });
+      let current = rgroups && rgroups.length > 0 ? rgroups[0] : {};
+      this.setState({ groups: rgroups, currentGroup: current });
     });
   }
 
   createGroup() {
     let user = this.state.user;
-    console.log(user.role);
-    let name = prompt('Enter Group Name to Create').trim();
+    let name = prompt('Enter Group Name to Create');
+    if (name === '') {alert('Please Enter a Name'); return;}
+    if (!name) return;
     let description = prompt('Enter Group Description');
+    if (description === '') {alert('Please Enter a Description'); return;}
+    if (!description) return;
+    name = name.trim();
+    description = description.trim();
     this.state.groups.push(name);
     let teachers = [];
     let students = [];
@@ -46,16 +51,34 @@ export default class Groups extends React.Component {
     Meteor.call('groups.insert', name, description, teachers, students, (err, rgroup) => {
       if (err) { console.log(err); return; }
       this.state.groups.push(rgroup);
-      this.forceUpdate();
+      this.setState({ currentGroup: rgroup });
     });
   }
 
   deleteGroup() {
-    let groupName = prompt('Enter Group Name to Delete').trim();
-    Meteor.call('groups.remove', groupName, Meteor.userId(), (err, rgroups) => {
-      if (err) { console.log(err); return; }
-      this.setState({groups: rgroups});
-    });
+    let groupName = prompt('Enter Group Name to Delete');
+    if (groupName === '') {alert('Please Enter a Group Name'); return;}
+    if (groupName) {
+      Meteor.call('groups.remove', groupName, Meteor.userId(), (err, rgroups) => {
+        if (err) { console.log(err); return; }
+        console.log(rgroups);
+        let current;
+        if (groupName === this.state.currentGroup.name) {
+          if (this.state.groups && this.state.groups.length > 0)
+            current = this.state.groups[0];
+          else
+            current = {};
+        }
+        else {
+          current = this.state.currentGroup;
+        }
+        this.setState({ groups: rgroups, currentGroup: current });
+      });
+    }
+  }
+
+  setCurrent(group) {
+    this.setState({ currentGroup: group });
   }
 
   render() {
@@ -73,7 +96,7 @@ export default class Groups extends React.Component {
                   <div className="row">
                     <div className="col-lg-12">
                       <ul className="list-unstyled mb-0">
-                        {this.state.groups.map((e, i) => <li key={i}><a href="#">{e.name}</a></li>)}
+                        {this.state.groups.map((e, i) => <li key={i}><a href="#" onClick={() => this.setCurrent(e)}>{e.name}</a></li>)}
                       </ul>
                       <button onClick={() => this.createGroup()} className="btn btn-primary">Create Group +</button>
                       <button hidden={this.state.groups && this.state.groups.length === 0} onClick={() => this.deleteGroup()} className="btn btn-danger">Delete Group -</button>
@@ -84,7 +107,7 @@ export default class Groups extends React.Component {
               <div className="card my-4">
                 <h5 className="card-header">Description</h5>
                 <div className="card-body">
-                  Here you can find the group description
+                  {this.state.currentGroup && this.state.currentGroup.description}
                 </div>
               </div>
             </div>
