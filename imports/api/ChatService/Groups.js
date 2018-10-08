@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 export const Groups = new Mongo.Collection('groups');
 
 Meteor.methods({
-    'groups.insert'(name, description, teachers, students) {
+    'groups.insert'(name, description, enrolled) {
 
         // Make sure the user is logged in before inserting a task
         if (!this.userId) {
@@ -16,18 +16,17 @@ Meteor.methods({
                 owner: this.userId,
                 name,
                 description,
-                teachers,
-                students
+                enrolled
             });
         return Groups.findOne({_id: groupID});
     },
     'groups.remove'(groupName) {
         Groups.remove({name: groupName, owner: this.userId});
-        let groups = Groups.find({owner: this.userId});
+        let groups = Groups.find({ enrolled: this.userId });
         return groups ? groups.fetch() : [];
     },
     'groups.getAll'() {
-        let userGroups = Groups.find({ owner: this.userId });
+        let userGroups = Groups.find({ enrolled: this.userId });
         return userGroups ? userGroups.fetch() : [];
     }
 

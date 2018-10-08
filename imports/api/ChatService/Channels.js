@@ -24,6 +24,9 @@ Meteor.methods({
         let groupChannels = Channels.find({ groupID });
         return groupChannels ? groupChannels.fetch() : [];
     },
+    'channels.removeAll'(groupID) {
+        Channels.remove({groupID});
+    },
     'channels.getAll'(groupID) {
         let groupChannels = Channels.find({ groupID });
         return groupChannels ? groupChannels.fetch() : [];
