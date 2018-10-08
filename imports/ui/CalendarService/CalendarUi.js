@@ -23,8 +23,8 @@ class CalendarUi extends React.Component {
   }
 
   handleSelect = ({ start, end }) => {
-    
-    const title = window.prompt('New Event name:');
+    $('#inputModal').modal('show')
+    /*const title = window.prompt('New Event name:');
     const desc = window.prompt('Enter description:');
     if (title)
       this.setState({
@@ -37,12 +37,12 @@ class CalendarUi extends React.Component {
             desc,
           },
         ],
-      });
+      });*/
   }
 
   render() {
-    let inputModal = (
-      <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    let outputModal = (
+      <div className="modal fade" id="outputModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -57,6 +57,34 @@ class CalendarUi extends React.Component {
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="button" className="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+    let inputModal = (
+      <div className="modal fade" id="inputModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Task</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Task Name</label>
+                <input type="text" className="form-control" ref='name' name='name' aria-describedby="emailHelp" placeholder="Enter Name"/>
+              </div>
+              <div className="form-group">
+                <label>Task Description</label>
+                <input type="text" className="form-control" ref='desc' name='desc' placeholder="Description"/>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" className="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
@@ -84,6 +112,7 @@ class CalendarUi extends React.Component {
           </div>
         </div>
         {inputModal}
+        {outputModal}
         <br/>
         <Footer/>
       </div>
