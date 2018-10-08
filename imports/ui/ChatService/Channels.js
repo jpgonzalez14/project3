@@ -69,7 +69,7 @@ export default class Channels extends React.Component {
   }
 
   renderMessages() {
-    return (<Messages />);
+    return (<Messages {...this.props}/>);
   }
 
   render() {
