@@ -37,7 +37,7 @@ export default class Groups extends React.Component {
   createGroup() {
     let user = this.state.user;
     console.log(user.role);
-    let name = prompt('Enter Group Name to Create');
+    let name = prompt('Enter Group Name to Create').trim();
     let description = prompt('Enter Group Description');
     this.state.groups.push(name);
     let teachers = [];
@@ -51,8 +51,11 @@ export default class Groups extends React.Component {
   }
 
   deleteGroup() {
-    let groupName = prompt('Enter Group Name to Delete');
-    
+    let groupName = prompt('Enter Group Name to Delete').trim();
+    Meteor.call('groups.remove', groupName, Meteor.userId(), (err, rgroups) => {
+      if (err) { console.log(err); return; }
+      this.setState({groups: rgroups});
+    });
   }
 
   render() {
@@ -73,7 +76,7 @@ export default class Groups extends React.Component {
                         {this.state.groups.map((e, i) => <li key={i}><a href="#">{e.name}</a></li>)}
                       </ul>
                       <button onClick={() => this.createGroup()} className="btn btn-primary">Create Group +</button>
-                      {this.state.groups && this.state.groups.length && <button onClick={() => this.deleteGroup()} className="btn btn-danger">Delete Group -</button>}
+                      <button hidden={this.state.groups && this.state.groups.length === 0} onClick={() => this.deleteGroup()} className="btn btn-danger">Delete Group -</button>
                     </div>
                   </div>
                 </div>

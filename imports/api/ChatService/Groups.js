@@ -21,13 +21,14 @@ Meteor.methods({
             });
         return Groups.findOne({_id: groupID});
     },
-    'groups.remove'(groupID) {
-        Groups.remove(groupID);
+    'groups.remove'(groupName) {
+        Groups.remove({name: groupName, owner: this.userId});
+        let groups = Groups.find({owner: this.userId});
+        return groups ? groups.fetch() : [];
     },
     'groups.getAll'() {
         let userGroups = Groups.find({ owner: this.userId });
-        if (userGroups) return userGroups.fetch();
-        else return [];
+        return userGroups ? userGroups.fetch() : [];
     }
 
 });
