@@ -1,78 +1,39 @@
 import React from 'react';
 
 export default class Messages extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  sendMessage() {
+    let m = this.refs.message.value;
+
+  }
+
+  renderMessage(message) {
+    return (
+      <div className="media mb-4">
+        <div className="media-body">
+          <h5 className="mt-0">{message.username}<small> {message.date}</small></h5>
+          <p>{message.text}</p>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container-fluid">
 
         <div className="scrolling">
-          <div className="media mb-4">
-            <div className="media-body">
-              <h5 className="mt-0">Ricardo<small> 11:20 am</small></h5>
-              <p>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel
-              metus scelerisque ante sollicitudin. Cras purus odio,
-              vestibulum in vulputate at, tempus viverra turpis. Fusce
-              condimentum nunc ac nisi vulputate fringilla. Donec lacinia
-              congue felis in faucibus.
-              </p>
-            </div>
-          </div>
-          <div className="media mb-4">
-            <div className="media-body">
-              <h5 className="mt-0">Ricardo<small> 11:20 am</small></h5>
-              <p>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel
-              metus scelerisque ante sollicitudin. Cras purus odio,
-              vestibulum in vulputate at, tempus viverra turpis. Fusce
-              condimentum nunc ac nisi vulputate fringilla. Donec lacinia
-              congue felis in faucibus.
-              </p>
-            </div>
-          </div>
-          <div className="media mb-4">
-            <div className="media-body">
-              <h5 className="mt-0">Ricardo<small> 11:20 am</small></h5>
-              <p>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel
-              metus scelerisque ante sollicitudin. Cras purus odio,
-              vestibulum in vulputate at, tempus viverra turpis. Fusce
-              condimentum nunc ac nisi vulputate fringilla. Donec lacinia
-              congue felis in faucibus.
-              </p>
-            </div>
-          </div>
-          <div className="media mb-4">
-            <div className="media-body">
-              <h5 className="mt-0">Ricardo<small> 11:20 am</small></h5>
-              <p>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel
-              metus scelerisque ante sollicitudin. Cras purus odio,
-              vestibulum in vulputate at, tempus viverra turpis. Fusce
-              condimentum nunc ac nisi vulputate fringilla. Donec lacinia
-              congue felis in faucibus.
-              </p>
-            </div>
-          </div>
-          <div className="media mb-4">
-            <div className="media-body">
-              <h5 className="mt-0">Ricardo<small> 11:20 am</small></h5>
-              <p>
-              Cras sit amet nibh libero, in gravida nulla. Nulla vel
-              metus scelerisque ante sollicitudin. Cras purus odio,
-              vestibulum in vulputate at, tempus viverra turpis. Fusce
-              condimentum nunc ac nisi vulputate fringilla. Donec lacinia
-              congue felis in faucibus.
-              </p>
-            </div>
-          </div>
-
+          {this.props.chatHistory.map((m) => this.renderMessage(m))}
         </div>
 
         <div className="input-group">
-          <input type="text" className="form-control" aria-label="Text input with segmented dropdown button"/>
+          <input type="text" className="form-control" aria-label="Text input with segmented dropdown button" ref='message' />
           <div className="input-group-append">
-            <button type="button" className="btn btn-outline-secondary">Send</button>
+            <button type="button" onSubmit={() => this.sendMessage()} className="btn btn-outline-secondary">Send</button>
           </div>
         </div>
       </div>
