@@ -55,9 +55,12 @@ class CalendarUi extends React.Component {
     this.setState({start: start});
     this.setState({end: end});
   }
-  handleOutputSelect = event => {
+  handleSelectEvent = (event) => {
+    this.setState({eventSelected: event});
+    console.log(event.title);
+    this.setState({name: event.title});
+    this.setState({start: event.start});
     $('#outputModal').modal('show');
-    console.log(this.event);
   }
 
   render() {
@@ -67,7 +70,7 @@ class CalendarUi extends React.Component {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Task</h5>
+              <h5 className="modal-title" id="exampleModalLabel">Create Task</h5>
               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -90,27 +93,48 @@ class CalendarUi extends React.Component {
         </div>
       </div>
     );
-    let outputModal = (
+    let outputModal;
+    if (this.state.desc) {
+      outputModal = (
+       <div className="modal fade" id="outputModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div className="modal-dialog" role="document">
+           <div className="modal-content">
+             <div className="modal-header">
+               <h5 className="modal-title" id="exampleModalLabel">{this.state.name}</h5>
+               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div className="modal-body">
+               {this.state.desc}
+             </div>
+             <div className="modal-footer">
+               <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+             </div>
+           </div>
+         </div>
+       </div>
+     );
+   } else {
+     outputModal = (
       <div className="modal fade" id="outputModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+              <h5 className="modal-title" id="exampleModalLabel">{this.state.name}</h5>
               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">
-              ...
-            </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
       </div>
     );
+   }
+
     var today = new Date();
     const localizer = BigCalendar.momentLocalizer(moment);
     return (
@@ -127,7 +151,7 @@ class CalendarUi extends React.Component {
               defaultView={BigCalendar.Views.WEEK}
               scrollToTime={new Date()}
               defaultDate={new Date()}
-              onSelectEvent={this.handleOutputSelect}
+              onSelectEvent={this.handleSelectEvent}
               onSelectSlot={this.handleSelect}
             />
           </div>
