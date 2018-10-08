@@ -22,18 +22,10 @@ class CalendarUi extends React.Component {
     console.log(this.state);
   }
 
-  nameChange = (e) => {
-    this.setState({name: e.target.value});
-  }
-  descChange = (e) => {
-    this.setState({desc: e.target.value});
-  }
-
-  reg = () => {
-    const title = this.state.name;
-    const desc = this.state.desc;
-    const start = this.state.start;
-    const end = this.state.end;
+  handleSelect = ({ start, end }) => {
+    $('#inputModal').modal('show')
+    /*const title = window.prompt('New Event name:');
+    const desc = window.prompt('Enter description:');
     if (title)
       this.setState({
         events: [
@@ -45,51 +37,10 @@ class CalendarUi extends React.Component {
             desc,
           },
         ],
-      });
-    $('#inputModal').modal('hide');
-
-  }
-
-  handleSelect = ({ start, end }) => {
-    $('#inputModal').modal('show');
-    this.setState({start: start});
-    this.setState({end: end});
-  }
-  handleOutputSelect = event => {
-    $('#outputModal').modal('show');
-    console.log(this.event);
+      });*/
   }
 
   render() {
-
-    let inputModal = (
-      <div className="modal fade" id="inputModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Task</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="form-group">
-                <label>Task Name</label>
-                <input type="text" className="form-control" ref='name' name='name' aria-describedby="emailHelp" placeholder="Enter Name" onChange={this.nameChange}/>
-              </div>
-              <div className="form-group">
-                <label>Task Description</label>
-                <input type="text" className="form-control" ref='desc' name='desc' placeholder="Description" onChange={this.descChange}/>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" className="btn btn-primary" onClick={this.reg}>Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
     let outputModal = (
       <div className="modal fade" id="outputModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog" role="document">
@@ -111,6 +62,34 @@ class CalendarUi extends React.Component {
         </div>
       </div>
     );
+    let inputModal = (
+      <div className="modal fade" id="inputModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Task</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Task Name</label>
+                <input type="text" className="form-control" ref='name' name='name' aria-describedby="emailHelp" placeholder="Enter Name"/>
+              </div>
+              <div className="form-group">
+                <label>Task Description</label>
+                <input type="text" className="form-control" ref='desc' name='desc' placeholder="Description"/>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" className="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
     var today = new Date();
     const localizer = BigCalendar.momentLocalizer(moment);
     return (
@@ -125,9 +104,9 @@ class CalendarUi extends React.Component {
               views={["week", "day"]}
               events={this.state.events}
               defaultView={BigCalendar.Views.WEEK}
-              scrollToTime={new Date()}
-              defaultDate={new Date()}
-              onSelectEvent={this.handleOutputSelect}
+              scrollToTime={new Date(2017, 1, 1, 6)}
+              defaultDate={new Date(today.getFullYear(), today.getDate(), today.getMonth()+1)}
+              onSelectEvent={event => alert('Name: ' + event.title + '\n' + 'Description: ' + event.desc)}
               onSelectSlot={this.handleSelect}
             />
           </div>
