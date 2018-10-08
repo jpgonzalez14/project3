@@ -61,11 +61,11 @@ export default class Groups extends React.Component {
     if (groupName) {
       Meteor.call('groups.remove', groupName, Meteor.userId(), (err, rgroups) => {
         if (err) { console.log(err); return; }
-        console.log(rgroups);
+        if (rgroups.length === this.state.groups.length) {alert('Please Enter an Existing Group Name'); return}
         let current;
         if (groupName === this.state.currentGroup.name) {
-          if (this.state.groups && this.state.groups.length > 0)
-            current = this.state.groups[0];
+          if (rgroups && rgroups.length > 0)
+            current = rgroups[0];
           else
             current = {};
         }
