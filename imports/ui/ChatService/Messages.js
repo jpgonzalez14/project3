@@ -6,16 +6,30 @@ export default class Messages extends React.Component {
     super(props);
   }
 
-  sendMessage() {
-    let m = this.refs.message.value;
-
+  componentDidUpdate() {
+    this.refs.chatMessages.scrollTop = this.refs.chatMessages.scrollHeight;
   }
 
-  renderMessage(message) {
+  sendMessage() {
+    let m = this.input.value;
+    this.input.value = '';
+    if (!this.props.currentChannel._id || !this.props.currentGroup._id) return;
+    if (m) {
+      m = m.trim();
+      let channelID = this.props.currentChannel._id;
+      Meteor.call('messages.insert', channelID, this.props.user.username, m, new Date(), (err, rmessage) => {
+        if (err) { console.log(err); return; }
+        this.props.addMessage(rmessage);
+      });
+    }
+  }
+
+
+  renderMessage(message, index) {
     return (
-      <div className="media mb-4">
+      <div key={index} className="media mb-4">
         <div className="media-body">
-          <h5 className="mt-0">{message.username}<small> {message.date}</small></h5>
+          <h5 className="mt-0">{message.username}<small> {message.date.toString()}</small></h5>
           <p>{message.text}</p>
         </div>
       </div>
@@ -26,14 +40,14 @@ export default class Messages extends React.Component {
     return (
       <div className="container-fluid">
 
-        <div className="scrolling">
-          {this.props.chatHistory.map((m) => this.renderMessage(m))}
+        <div ref='chatMessages' className="scrolling">
+          {this.props.chatHistory.map((m, i) => this.renderMessage(m, i))}
         </div>
 
         <div className="input-group">
-          <input type="text" className="form-control" aria-label="Text input with segmented dropdown button" ref='message' />
+          <input type="text" onKeyPress={(e) => { if (e.key === 'Enter') this.sendMessage() }} className="form-control" aria-label="Text input with segmented dropdown button" ref={(text) => this.input = text} />
           <div className="input-group-append">
-            <button type="button" onSubmit={() => this.sendMessage()} className="btn btn-outline-secondary">Send</button>
+            <button type="button" onClick={() => this.sendMessage()} className="btn btn-outline-secondary">Send</button>
           </div>
         </div>
       </div>

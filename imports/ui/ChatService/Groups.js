@@ -31,7 +31,16 @@ export default class Groups extends React.Component {
     Meteor.call('groups.getAll', (err, rgroups) => {
       if (err) { console.log(err); return; }
       let currentG = rgroups && rgroups.length > 0 ? rgroups[0] : {};
-      this.setState({ groups: rgroups, currentGroup: currentG });
+      let groupID = currentG._id ? currentG._id : '';
+      Meteor.call('channels.getAll', groupID, (err, rchannels) => {
+        if (err) { console.log(err); return; }
+        let currentC = rchannels && rchannels.length > 0 ? rchannels[0] : {};
+        let channelID = currentC._id ? currentC._id : '';
+        Meteor.call('messages.getAll', channelID, (err, rmessages) => {
+          if (err) { console.log(err); return; }
+          this.setState({ groups: rgroups, groupChannels: rchannels, currentGroup: currentG, currentChannel: currentC, chatHistory: rmessages });
+        });
+      });
     });
   }
 
@@ -49,45 +58,57 @@ export default class Groups extends React.Component {
     Meteor.call('groups.insert', name, description, enrolled, (err, rgroup) => {
       if (err) { console.log(err); return; }
       this.state.groups.push(rgroup);
-      this.setState({ currentGroup: rgroup });
+      this.setState({ currentGroup: rgroup, groupChannels: [], currentChannel: {}, chatHistory: [] });
     });
   }
 
   deleteGroup() {
     let groupName = prompt('Enter Group Name to Delete');
     if (groupName === '') { alert('Please Enter a Group Name'); return; }
-    if (groupName) {
-      Meteor.call('groups.remove', groupName, Meteor.userId(), (err, rgroups) => {
-        if (err) { console.log(err); return; }
-        if (rgroups.length === this.state.groups.length) { alert('Please Enter an Existing Group Name'); return }
-        let currentG = {};
-        let currentC = {};
-        let groupC = [];
-        let groupID;
-        if (groupName === this.state.currentGroup.name) {
-          if (this.state.groupChannels.length > 0) {
-            Meteor.call('channels.removeAll', this.state.groupChannels[0].groupID, (err) => {
-              if (err) { console.log(err); return; }
-            });
-          }
-          currentG = rgroups && rgroups.length > 0 ? rgroups[0] : {};
-          groupID = currentG._id ? currentG._id : '';
-          Meteor.call('channels.getAll', groupID, (err, rchannels) => {
+    if (!groupName) return;
+    Meteor.call('groups.remove', groupName, Meteor.userId(), (err, rgroups) => {
+      if (err) { console.log(err); return; }
+      if (rgroups.length === this.state.groups.length) { alert('Please Enter an Existing Group Name'); return }
+      let currentG = {};
+      let currentC = {};
+      let groupC = [];
+      let groupID;
+      if (groupName === this.state.currentGroup.name) {
+        if (this.state.groupChannels.length > 0) {
+          Meteor.call('channels.removeAll', this.state.groupChannels[0].groupID, (err) => {
             if (err) { console.log(err); return; }
-            groupC = rchannels;
-            currentC = rchannels && rchannels.length > 0 ? rchannels[0] : {};
-            this.setState({ groups: rgroups, groupChannels: groupC, currentGroup: currentG, currentChannel: currentC });
+          });
+          this.state.groupChannels.forEach(channel => {
+            Meteor.call('messages.removeAll', channel._id, (err) => { if (err) { console.log(err); return; } });
           });
         }
-        else {
-          groupID = this.state.groups.filter((g) => g.name === groupName)[0]._id
+        currentG = rgroups && rgroups.length > 0 ? rgroups[0] : {};
+        groupID = currentG._id ? currentG._id : '';
+        Meteor.call('channels.getAll', groupID, (err, rchannels) => {
+          if (err) { console.log(err); return; }
+          groupC = rchannels;
+          currentC = rchannels && rchannels.length > 0 ? rchannels[0] : {};
+          let channelID = currentC._id ? currentC._id : '';
+          Meteor.call('messages.getAll', channelID, (err, rmessages) => {
+            if (err) { console.log(err); return; }
+            this.setState({ groups: rgroups, groupChannels: groupC, currentGroup: currentG, currentChannel: currentC, chatHistory: rmessages });
+          });
+        });
+      }
+      else {
+        groupID = this.state.groups.filter((g) => g.name === groupName)[0]._id;
+        Meteor.call('channels.getAll', groupID, (err, rchannels) => {
+          if (err) { console.log(err); return; }
+          rchannels.forEach(channel => {
+            Meteor.call('messages.removeAll', channel._id, (err) => { if (err) { console.log(err); return; } });
+          });
           Meteor.call('channels.removeAll', groupID, (err) => {
             if (err) { console.log(err); return; }
-            this.setState({ groups: rgroups, groupChannels: groupC, currentGroup: currentG, currentChannel: currentC });
+            this.setState({ groups: rgroups });
           });
-        }
-      });
-    }
+        })
+      }
+    });
   }
 
   joinGroup() {
@@ -98,7 +119,11 @@ export default class Groups extends React.Component {
     Meteor.call('channels.getAll', group._id, (err, rchannels) => {
       if (err) { console.log(err); return; }
       let currentC = rchannels && rchannels.length > 0 ? rchannels[0] : {};
-      this.setState({ groupChannels: rchannels, currentGroup: group, currentChannel: currentC });
+      let channelID = currentC._id ? currentC._id : '';
+      Meteor.call('messages.getAll', channelID, (err, rmessages) => {
+        if (err) { console.log(err); return; }
+        this.setState({ groupChannels: rchannels, currentGroup: group, currentChannel: currentC, chatHistory: rmessages });
+      })
     });
   }
 
@@ -106,9 +131,15 @@ export default class Groups extends React.Component {
     this.setState(newState);
   }
 
+  addMessage(message) {
+    this.state.chatHistory.push(message);
+    this.setState({});
+  }
+
   renderChannels() {
     return (<Channels user={this.state.user} groups={this.state.groups} groupChannels={this.state.groupChannels} currentChannel={this.state.currentChannel}
-      currentGroup={this.state.currentGroup} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)} />);
+      currentGroup={this.state.currentGroup} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)}
+      addMessage={(m) => this.addMessage(m)} />);
   }
 
   render() {

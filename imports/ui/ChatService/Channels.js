@@ -36,7 +36,7 @@ export default class Channels extends React.Component {
         if (err) { console.log(err); return; }
         let channels = this.props.groupChannels;
         channels.push(rchannel);
-        this.props.changeState({ groupChannels: channels, currentChannel: rchannel });
+        this.props.changeState({ groupChannels: channels, currentChannel: rchannel , chatHistory: []});
       });
     }
   }
@@ -49,23 +49,34 @@ export default class Channels extends React.Component {
       Meteor.call('channels.remove', channelName, currentG._id, (err, rchannels) => {
         if (err) { console.log(err); return; }
         if (rchannels.length === this.props.groupChannels.length) {alert('Please Enter an Existing Channel Name'); return}
-        let current;
-        if (channelName === this.props.currentChannel.name) {
-          if (rchannels && rchannels.length > 0)
-            current = rchannels[0];
-          else
-            current = {};
-        }
-        else {
-          current = this.props.currentChannel;
-        }
-        this.props.changeState({ groupChannels: rchannels, currentChannel: current });
+        Meteor.call('messages.removeAll', this.props.currentChannel._id, (err) => {
+          let current = {};
+          let chat = [];
+          if (err) { console.log(err); return; }
+          if (channelName === this.props.currentChannel.name) {
+            current = rchannels && rchannels.length > 0 ? rchannels[0] : {};
+            let channelID = current._id ? current._id : '';
+            Meteor.call('messages.getAll', channelID, (err, rmessages) => {
+              if (err) { console.log(err); return; }
+              chat = rmessages;
+              this.props.changeState({ groupChannels: rchannels, currentChannel: current , chatHistory: chat});
+            });
+          }
+          else {
+            current = this.props.currentChannel;
+            chat = this.props.chatHistory;
+            this.props.changeState({ groupChannels: rchannels, currentChannel: current , chatHistory: chat});
+          }
+        });
       });
     }
   }
 
   setCurrent(channel) {
-    this.props.changeState({currentChannel: channel});
+    Meteor.call('messages.getAll', channel._id, (err, rmessages) => {
+      if (err) { console.log(err); return; }
+      this.props.changeState({currentChannel: channel, chatHistory: rmessages});
+    })
   }
 
   renderMessages() {
