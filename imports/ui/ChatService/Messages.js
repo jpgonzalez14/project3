@@ -29,7 +29,7 @@ export default class Messages extends React.Component {
     return (
       <div key={index} className="media mb-4">
         <div className="media-body">
-          <h5 className="mt-0">{message.username}<small> {message.date.toString()}</small></h5>
+          <h5 className="mt-0">{message.username}<small> - {message.date.toLocaleString()}</small></h5>
           <p>{message.text}</p>
         </div>
       </div>

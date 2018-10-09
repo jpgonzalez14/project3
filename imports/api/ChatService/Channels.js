@@ -3,6 +3,12 @@ import { Meteor } from 'meteor/meteor';
 
 export const Channels = new Mongo.Collection('channels');
 
+if (Meteor.isServer) {
+    Meteor.publish('channels', () => {
+        Channels.find({}).fetch();
+    });
+}
+
 Meteor.methods({
     'channels.insert'(groupID, name, description) {
 
@@ -17,15 +23,15 @@ Meteor.methods({
                 name,
                 description
             });
-        return Channels.findOne({_id: channelID});
+        return Channels.findOne({ _id: channelID });
     },
     'channels.remove'(channelName, groupID) {
-        Channels.remove({name: channelName, groupID});
+        Channels.remove({ name: channelName, groupID });
         let groupChannels = Channels.find({ groupID });
         return groupChannels ? groupChannels.fetch() : [];
     },
     'channels.removeAll'(groupID) {
-        Channels.remove({groupID});
+        Channels.remove({ groupID });
     },
     'channels.getAll'(groupID) {
         let groupChannels = Channels.find({ groupID });

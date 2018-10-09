@@ -3,6 +3,12 @@ import { Meteor } from 'meteor/meteor';
 
 export const Messages = new Mongo.Collection('messages');
 
+if (Meteor.isServer) {
+    Meteor.publish('messages', () => {
+        Messages.find({}).fetch();
+    });
+}
+
 Meteor.methods({
     'messages.insert'(channelID, username, text, date) {
 
