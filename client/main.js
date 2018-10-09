@@ -16,11 +16,16 @@ import Landing from './../imports/ui/layout/Landing';
 import Groups from './../imports/ui/ChatService/Groups';
 import CalendarUi from './../imports/ui/CalendarService/CalendarUi';
 
+//Como dijo jon en clase, acuerdense de incluir siempre la siguiente linea en el main.js
+import './main.html';
+
+
 const history = createHistory();
 const unauthenticatedPages = ['/', '/signup', '/login'];
 const authenticatedPages = ['/group', '/calendar'];
 let isUnauthenticatedPage = true;
 let isAuthenticatedPage = false;
+
 
 const routes = (
  <Router history={history}>
