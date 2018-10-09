@@ -38,11 +38,11 @@ class Login extends React.Component{
           <form onSubmit={this.onSubmit.bind(this)}>
             <div className="form-group">
               <label>Email address</label>
-              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email"/>
+              <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email" required/>
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input type="password" className="form-control" ref='password' name='password' placeholder="Password"/>
+              <input type="password" className="form-control" ref='password' name='password' placeholder="Password" required/>
             </div>
             <button type="submit" className="btn btn-primary">Login</button>
           </form>

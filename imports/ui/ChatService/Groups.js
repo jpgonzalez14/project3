@@ -16,7 +16,8 @@ export default class Groups extends React.Component {
       groupChannels: [],
       currentGroup: {},
       currentChannel: {},
-      chatHistory: []
+      chatHistory: [],
+      searchResult: []
     };
   }
 
@@ -111,10 +112,6 @@ export default class Groups extends React.Component {
     });
   }
 
-  joinGroup() {
-
-  }
-
   setCurrent(group) {
     Meteor.call('channels.getAll', group._id, (err, rchannels) => {
       if (err) { console.log(err); return; }
@@ -136,10 +133,36 @@ export default class Groups extends React.Component {
     this.setState({});
   }
 
+  searchGroup() {
+    let groupName = this.refs.groupSearch.value.trim();
+    if (!groupName && this.state.searchResult.length === 0) return;
+    console.log('entered');
+    Meteor.call('groups.getByName', groupName, (err, rgroups) => {
+      if (err) { console.log(err); return; }
+      console.log('search',rgroups);
+      this.setState({ searchResult: rgroups });
+    });
+  }
+
+  enrollGroup(group) {
+    this.setState({searchResult: []});
+  }
+
   renderChannels() {
     return (<Channels user={this.state.user} groups={this.state.groups} groupChannels={this.state.groupChannels} currentChannel={this.state.currentChannel}
       currentGroup={this.state.currentGroup} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)}
       addMessage={(m) => this.addMessage(m)} />);
+  }
+
+  renderSearch() {
+    return (
+      <ul className="list-unstyled mb-0">
+        {this.state.searchResult.length > 0 && this.state.searchResult.length + ' Results'}
+        {this.state.searchResult.map((e, i) => 
+          <li key={i}>{e.name} <a href="#" onClick={() => this.enrollGroup(e)}>Enroll</a></li>
+        )}
+      </ul>
+    );
   }
 
   render() {
@@ -156,6 +179,11 @@ export default class Groups extends React.Component {
                 <div className="card-body">
                   <div className="row">
                     <div className="col-lg-12">
+                      <div className="form-group">
+                        <label>Search to Enroll</label>
+                        <input onKeyPress={(e) => { if (e.key === 'Enter') this.searchGroup() }} type="text" className="form-control" ref='groupSearch' name='search' placeholder="Search Group" />
+                      </div>
+                      {this.renderSearch()}
                       <ul className="list-unstyled mb-0">
                         {this.state.groups.map((e, i) => <li key={i}><a href="#" onClick={() => this.setCurrent(e)}>{e.name}</a></li>)}
                       </ul>

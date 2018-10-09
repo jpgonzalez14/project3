@@ -28,6 +28,9 @@ Meteor.methods({
     'groups.getAll'() {
         let userGroups = Groups.find({ enrolled: this.userId });
         return userGroups ? userGroups.fetch() : [];
+    },
+    'groups.getByName'(groupName) {
+        let groups = Groups.find({name: groupName});
+        return groups ? groups.fetch() : [];
     }
-
 });
