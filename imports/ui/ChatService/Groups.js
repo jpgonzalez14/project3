@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import {withTracker} from 'meteor/react-meteor-data'
 import NavBar from './../layout/NavBar';
 import Footer from './../layout/Footer';
 
 import Channels from './Channels';
 
-export default class Groups extends React.Component {
+class Groups extends React.Component {
 
   constructor(props) {
     super(props);
@@ -139,7 +139,7 @@ export default class Groups extends React.Component {
     console.log('entered');
     Meteor.call('groups.getByName', groupName, (err, rgroups) => {
       if (err) { console.log(err); return; }
-      console.log('search',rgroups);
+      console.log('search', rgroups);
       this.setState({ searchResult: rgroups });
     });
   }
@@ -147,7 +147,7 @@ export default class Groups extends React.Component {
   enrollGroup(group) {
     this.refs.groupSearch.value = '';
     let alreadyEnrolled = this.state.groups.find((elem) => elem._id === group._id);
-    if (alreadyEnrolled) {alert('Already enrolled!'); return}
+    if (alreadyEnrolled) { alert('Already enrolled!'); return }
     Meteor.call('groups.enrollUser', group._id, (err) => {
       if (err) { console.log(err); return; }
       this.state.groups.push(group);
@@ -157,15 +157,14 @@ export default class Groups extends React.Component {
         let channelID = currentC._id ? currentC._id : '';
         Meteor.call('messages.getAll', channelID, (err, rmessages) => {
           if (err) { console.log(err); return; }
-          this.setState({searchResult: [], groupChannels: rchannels, currentGroup: group, currentChannel: currentC, chatHistory: rmessages});
+          this.setState({ searchResult: [], groupChannels: rchannels, currentGroup: group, currentChannel: currentC, chatHistory: rmessages });
         });
       });
     });
   }
 
   renderChannels() {
-    return (<Channels user={this.state.user} groups={this.state.groups} groupChannels={this.state.groupChannels} currentChannel={this.state.currentChannel}
-      currentGroup={this.state.currentGroup} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)}
+    return (<Channels user={this.state.user} groups={this.state.groups} groupChannels={this.state.groupChannels} {...this.props} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)}
       addMessage={(m) => this.addMessage(m)} />);
   }
 
@@ -173,7 +172,7 @@ export default class Groups extends React.Component {
     return (
       <ul className="list-unstyled mb-0">
         {this.state.searchResult.length > 0 && this.state.searchResult.length + ' Results'}
-        {this.state.searchResult.map((e, i) => 
+        {this.state.searchResult.map((e, i) =>
           <li key={i}>{e.name} <a href="#" onClick={() => this.enrollGroup(e)}>Enroll</a></li>
         )}
       </ul>
@@ -228,3 +227,16 @@ export default class Groups extends React.Component {
     );
   }
 }
+
+
+export default withTracker(() => {
+  Meteor.subscribe('userData');
+  Meteor.subscribe('channels');
+  Meteor.subscribe('messages');
+  console.log(Meteor.user());
+  return {
+    currentChannel: Meteor.user().profile.currentChannel,
+    currentGroup: Meteor.user().profile.currentGroup,
+    username: Meteor.user().username
+  };
+})(Groups);
