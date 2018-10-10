@@ -69,7 +69,7 @@ export default class Groups extends React.Component {
     if (!groupName) return;
     Meteor.call('groups.remove', groupName, Meteor.userId(), (err, rgroups) => {
       if (err) { console.log(err); return; }
-      if (rgroups.length === this.state.groups.length) { alert('Please Enter an Existing Group Name'); return }
+      if (rgroups.length === this.state.groups.length) { alert(`Could Not Delete Group ${groupName}`); return }
       let currentG = {};
       let currentC = {};
       let groupC = [];
@@ -145,7 +145,22 @@ export default class Groups extends React.Component {
   }
 
   enrollGroup(group) {
-    this.setState({searchResult: []});
+    this.refs.groupSearch.value = '';
+    let alreadyEnrolled = this.state.groups.find((elem) => elem._id === group._id);
+    if (alreadyEnrolled) {alert('Already enrolled!'); return}
+    Meteor.call('groups.enrollUser', group._id, (err) => {
+      if (err) { console.log(err); return; }
+      this.state.groups.push(group);
+      Meteor.call('channels.getAll', group._id, (err, rchannels) => {
+        if (err) { console.log(err); return; }
+        let currentC = rchannels.length > 0 ? rchannels[0] : {};
+        let channelID = currentC._id ? currentC._id : '';
+        Meteor.call('messages.getAll', channelID, (err, rmessages) => {
+          if (err) { console.log(err); return; }
+          this.setState({searchResult: [], groupChannels: rchannels, currentGroup: group, currentChannel: currentC, chatHistory: rmessages});
+        });
+      });
+    });
   }
 
   renderChannels() {

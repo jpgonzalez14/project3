@@ -32,5 +32,10 @@ Meteor.methods({
     'groups.getByName'(groupName) {
         let groups = Groups.find({name: groupName});
         return groups ? groups.fetch() : [];
+    },
+    'groups.enrollUser'(groupID) {
+        let group = Groups.findOne({ _id: groupID });
+        group.enrolled.push(this.userId);
+        Groups.update({_id: groupID}, group);
     }
 });
