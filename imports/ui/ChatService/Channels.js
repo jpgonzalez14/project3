@@ -1,9 +1,10 @@
 import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
+import {withTracker} from 'meteor/react-meteor-data';
 
 import Messages from './Messages';
 
-export default class Channels extends React.Component {
+class Channels extends React.Component {
 
   constructor(props) {
     super(props);
@@ -116,3 +117,8 @@ export default class Channels extends React.Component {
     );
   }
 }
+
+export default withTracker(() => {
+   
+  Meteor.subscribe('channels')
+});

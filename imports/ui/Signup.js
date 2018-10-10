@@ -18,17 +18,17 @@ class Signup extends React.Component {
 
     let email = this.refs.email.value.trim();
     let password = this.refs.password.value.trim();
-    let name = this.refs.name.value.trim();
+    let username = this.refs.name.value.trim();
     console.log(password);
 
-    let roles = this.refs.role.value;
+    let roles = this.refs.role.value; 
     let groups = [];
-    Accounts.createUser({ name, email, password, roles, groups }, (err) => {
+    Accounts.createUser({ username, email, password, profile: {currentGroup: {}, currentChannel: {}} }, (err) => {
       if (err) {
         this.setState({ error: err.reason });
       } else {
         this.setState({ error: '' });
-        Meteor.call('users.upsert', name, email, roles, groups);
+        Meteor.call('users.upsert', username, email, roles, groups);
       }
     });
   }

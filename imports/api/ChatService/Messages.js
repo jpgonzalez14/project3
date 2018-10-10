@@ -4,8 +4,8 @@ import { Meteor } from 'meteor/meteor';
 export const Messages = new Mongo.Collection('messages');
 
 if (Meteor.isServer) {
-    Meteor.publish('messages', () => {
-        Messages.find({}).fetch();
+    Meteor.publish('messages', (channelID) => {
+        Messages.find({channelID}).fetch();
     });
 }
 
