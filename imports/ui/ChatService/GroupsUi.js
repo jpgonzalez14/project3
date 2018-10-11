@@ -8,7 +8,7 @@ import {Groups} from './../../api/ChatService/Groups.js';
 import {Channels} from './../../api/ChatService/Channels.js';
 import {Messages} from './../../api/ChatService/Messages.js';
 
-import ChannelsUi from './ChannelsUi.js';
+import ChannelsUi from './ChannelsUi';
 
 class GroupsUi extends React.Component {
 
@@ -249,4 +249,8 @@ export default withTracker(() => {
     groups: userGroups,
     channels: userChannels
   };
+<<<<<<< HEAD
 })(Groups);
+=======
+})(GroupsUi);
+>>>>>>> bffebeacf8190d151dbea1b898e4092143795c10

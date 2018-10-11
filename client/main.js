@@ -14,7 +14,7 @@ import Login from './../imports/ui/Login';
 import NotFound from './../imports/ui/layout/NotFound';
 import Landing from './../imports/ui/layout/Landing';
 import CalendarUi from './../imports/ui/CalendarService/CalendarUi';
-import GroupsUi from '../imports/ui/ChatService/GroupsUi';
+import GroupsUi from '../imports/ui/ChatService/GroupsUi.js';
 const history = createHistory();
 const unauthenticatedPages = ['/', '/signup', '/login'];
 const authenticatedPages = ['/group', '/calendar'];
