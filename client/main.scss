@@ -14,26 +14,47 @@
   height: 100%;
 }
 body{
-  background-color: #F0EBDF;
+  background-color: #fff;
 }
 footer{
-  background-color: #252C3F;
+  background-color: #4ABDAC;
 }
 .backcolonav{
-  background-color: #252C3F;
+  background-color: #4ABDAC;
 }
 .ctext{
-  color: #F0EBDF;
+  color: #fff;
 }
-.colorBut{
-  background-color: #5B3C27
+h1{
+  color: #FC4A1A;
+}
+label{
+  color: #F7B733;
 }
 i{
   color: #F0EBDF;
 }
 .footer-copyright{
-  color: #F0EBDF;
+  color: #fff;
 }
 .page-footer{
-  background-color: #252C3F;
+  background-color: #4ABDAC;
+}
+.dtext{
+  color: #FC4A1A;
+}
+
+button.btn {
+  background-color: #F7B733;
+  border-color: #F7B733;
+}
+button.btn:hover {
+  background-color: #FC4A1A;
+  border-color: #FC4A1A;
+}
+button.btn:focus,
+button.btn.focus {
+  box-shadow: none;
+  background-color: #FC4A1A;
+  border-color: #FC4A1A;
 }

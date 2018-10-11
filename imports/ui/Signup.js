@@ -21,7 +21,7 @@ class Signup extends React.Component {
     let username = this.refs.name.value.trim();
     console.log(password);
 
-    let role = this.refs.role.value; 
+    let role = this.refs.role.value;
     Accounts.createUser({ username, email, password, profile: {currentGroup: {}, currentChannel: {}} }, (err) => {
       if (err) {
         this.setState({ error: err.reason });
@@ -63,13 +63,11 @@ class Signup extends React.Component {
                 <option value="Teacher">I am a Teacher</option>
               </select>
             </div>
-            <br />
-            <br />
             <button type="submit" className="btn btn-primary">Create account</button>
           </form>
-          <br />
-          <Link to='/login'><small>already have an account?</small></Link>
+          <Link to='/login'><small className='dtext'>already have an account?</small></Link>
         </div>
+        <br />
         <br />
         <Footer />
       </div>

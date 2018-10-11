@@ -7,6 +7,7 @@ class Landing extends React.Component{
     return (
       <div>
         <NavBar/>
+        <h1></h1>
         <p>Landing</p>
         <Footer/>
       </div>
