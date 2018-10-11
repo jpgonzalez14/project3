@@ -40,7 +40,7 @@ class Footer extends React.Component{
 
     <div className="footer-copyright text-center py-3">Created by:
           <a
-            className="text-primary-color"
+            className="text-light"
             href="http://juanpgonzalez.com/"
             target="_blank"
           >
@@ -49,7 +49,7 @@ class Footer extends React.Component{
           </a>{' '}
           &
           <a
-            className="text-primary-color"
+            className="text-light"
             href="http://rangel10.github.io/"
             target="_blank"
           >
