@@ -4,9 +4,9 @@ import {withTracker} from 'meteor/react-meteor-data'
 import NavBar from '../layout/NavBar';
 import Footer from '../layout/Footer';
 
-import {Groups} from '../../api/ChatService/Groups.js';
-import {Channels} from '../../api/ChatService/Channels.js';
-import {Messages} from '../../api/ChatService/Messages.js';
+import {Groups} from './../../api/ChatService/Groups.js';
+import {Channels} from './../../api/ChatService/Channels.js';
+import {Messages} from './../../api/ChatService/Messages.js';
 
 import ChannelsUi from './ChannelsUi.js';
 
