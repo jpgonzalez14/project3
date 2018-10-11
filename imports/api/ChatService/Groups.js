@@ -6,7 +6,7 @@ export const Groups = new Mongo.Collection('groups');
 if (Meteor.isServer) {
     Meteor.publish('groups', () => {
         if (this.userId) {
-            return Channels.find({enrolled: this.userId}).fetch();
+            return Groups.find({enrolled: this.userId}).fetch();
         } else {
             return [];
         }

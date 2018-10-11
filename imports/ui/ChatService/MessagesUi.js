@@ -1,5 +1,9 @@
 import React from 'react';
-import {Messages} from '../../api/ChatService/Messages';
+import { Groups } from './../../api/ChatService/Groups';
+import { Channels } from './../../api/ChatService/Channels';
+import { Messages } from './../../api/ChatService/Messages';
+import { withTracker } from 'meteor/react-meteor-data';
+
 
 export default class MessagesUi extends React.Component {
 
