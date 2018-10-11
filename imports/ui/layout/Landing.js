@@ -14,11 +14,23 @@ class Landing extends React.Component{
           <small className='dtext'>An app like no other</small>
           <p>
             This application seeks to create communication channels between teachers
-            and students in an easy, safe and intuitive way. We also have a calendar
+            and students in an easy, safe and intuitive way. <br/> We also have a calendar
             system that allows users to schedule their activities or important dates,
             in this application they will find everything they need to develop their
             academic life in a safe and organized way.
           </p>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
           <br/>
         </div>
         <Footer/>

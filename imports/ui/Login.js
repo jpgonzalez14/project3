@@ -57,7 +57,6 @@ class Login extends React.Component{
         <br/>
         <br/>
         <br/>
-        <br/>
         <Footer/>
       </div>
     );
