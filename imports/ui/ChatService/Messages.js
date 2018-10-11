@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Messages extends React.Component {
+export default class Messages extends React.Component {
 
   constructor(props) {
     super(props);
