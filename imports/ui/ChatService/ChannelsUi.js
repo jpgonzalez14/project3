@@ -17,6 +17,7 @@ export default class ChannelsUi extends React.Component {
 
   componentDidMount() {
     let chans = this.props.groupChannels;
+    console.log(chans);
     let currentC = this.props.getFirst(chans);
     this.props.changeState({ currentChannel: currentC });
   }
@@ -90,8 +91,8 @@ export default class ChannelsUi extends React.Component {
                   <ul className="list-unstyled mb-0">
                     {this.props.groupChannels.map((e, i) => <li key={i}><a href="#" onClick={() => this.setCurrent(e)}>{e.name}</a></li>)}
                   </ul>
-                  <button hidden={this.props.groups && this.props.groups.length === 0} onClick={() => this.createChannel()} className="btn btn-success">Create Channel +</button>
-                  <button hidden={this.props.groupChannels && this.props.groupChannels.length === 0} onClick={() => this.deleteChannel()} className="btn btn-danger">Delete Channel -</button>
+                  <button hidden={this.props.groups.length === 0} onClick={() => this.createChannel()} className="btn btn-success">Create Channel +</button>
+                  <button hidden={this.props.groupChannels.length === 0} onClick={() => this.deleteChannel()} className="btn btn-danger">Delete Channel -</button>
                 </div>
               </div>
             </div>
