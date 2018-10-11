@@ -3,8 +3,18 @@ import { Meteor } from 'meteor/meteor';
 
 export const Groups = new Mongo.Collection('groups');
 
+if (Meteor.isServer) {
+    Meteor.publish('groups', () => {
+        if (this.userId) {
+            return Channels.find({enrolled: this.userId}).fetch();
+        } else {
+            return [];
+        }
+    });
+}
+
 Meteor.methods({
-    'groups.insert'(name, description, enrolled) {
+    'groups.insert'(name, description) {
 
         // Make sure the user is logged in before inserting a task
         if (!this.userId) {
@@ -16,7 +26,8 @@ Meteor.methods({
                 owner: this.userId,
                 name,
                 description,
-                enrolled
+                enrolled: [this.userId],
+                channels: []
             });
         return Groups.findOne({_id: groupID});
     },

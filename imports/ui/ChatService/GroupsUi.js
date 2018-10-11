@@ -1,15 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {withTracker} from 'meteor/react-meteor-data'
-import NavBar from './../layout/NavBar';
-import Footer from './../layout/Footer';
+import NavBar from '../layout/NavBar';
+import Footer from '../layout/Footer';
 
-import Channels from './Channels';
+import {Groups} from '../../api/ChatService/Groups.js';
+import {Channels} from '../../api/ChatService/Channels.js';
+import {Messages} from '../../api/ChatService/Messages.js';
 
-class Groups extends React.Component {
+import ChannelsUi from './ChannelsUi.js';
+
+class GroupsUi extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       user: {},
       groups: [],
@@ -56,7 +61,7 @@ class Groups extends React.Component {
     name = name.trim();
     description = description.trim();
     let enrolled = [Meteor.userId()];
-    Meteor.call('groups.insert', name, description, enrolled, (err, rgroup) => {
+    Meteor.call('groups.insert', name, description, (err, rgroup) => {
       if (err) { console.log(err); return; }
       this.state.groups.push(rgroup);
       this.setState({ currentGroup: rgroup, groupChannels: [], currentChannel: {}, chatHistory: [] });
@@ -164,7 +169,7 @@ class Groups extends React.Component {
   }
 
   renderChannels() {
-    return (<Channels user={this.state.user} groups={this.state.groups} groupChannels={this.state.groupChannels} {...this.props} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)}
+    return (<ChannelsUi user={this.state.user} groups={this.state.groups} groupChannels={this.state.groupChannels} {...this.props} chatHistory={this.state.chatHistory} changeState={(newState) => this.changeState(newState)}
       addMessage={(m) => this.addMessage(m)} />);
   }
 
@@ -230,13 +235,18 @@ class Groups extends React.Component {
 
 
 export default withTracker(() => {
-  Meteor.subscribe('userData');
-  Meteor.subscribe('channels');
-  Meteor.subscribe('messages');
-  console.log(Meteor.user());
+  Meteor.subscribe('groups');
+  let userGroups = Groups.find({}).fetch();
+  userGroups.forEach((g) => {
+    Meteor.subscribe('channels', g._id);
+  });
+  let userChannels = Channels.find({}).fetch();
+  userChannels.forEach((c) => {
+    Meteor.subscribe('messages', c._id);
+  });
   return {
-    currentChannel: Meteor.user().profile.currentChannel,
-    currentGroup: Meteor.user().profile.currentGroup,
-    username: Meteor.user().username
+    user: Meteor.user(),
+    groups: userGroups,
+    channels: userChannels
   };
 })(Groups);

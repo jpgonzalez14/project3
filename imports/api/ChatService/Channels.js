@@ -4,13 +4,11 @@ import { Meteor } from 'meteor/meteor';
 export const Channels = new Mongo.Collection('channels');
 
 if (Meteor.isServer) {
-    Meteor.publish('channels', () => {
+    Meteor.publish('channels', (groupID) => {
         if (this.userId) {
-            let currentG = Meteor.user().profile.currentGroup;
-            let groupID = currentG._id ? currentG._id : '';
             return Channels.find({groupID}).fetch();
         } else {
-            this.ready();
+            return [];
         }
     });
 }

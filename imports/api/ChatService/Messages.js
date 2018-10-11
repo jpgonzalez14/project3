@@ -4,13 +4,11 @@ import { Meteor } from 'meteor/meteor';
 export const Messages = new Mongo.Collection('messages');
 
 if (Meteor.isServer) {
-    Meteor.publish('messages', () => {
+    Meteor.publish('messages', (channelID) => {
         if (this.userId) {
-            let currentC = Meteor.user().profile.currentChannel;
-            let channelID = currentC._id ? currentC._id : '';
             return Channels.find({channelID}).fetch();
         } else {
-            this.ready();
+            return [];
         }
     });
 }

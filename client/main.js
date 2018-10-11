@@ -13,9 +13,8 @@ import Signup from './../imports/ui/Signup';
 import Login from './../imports/ui/Login';
 import NotFound from './../imports/ui/layout/NotFound';
 import Landing from './../imports/ui/layout/Landing';
-import Groups from './../imports/ui/ChatService/Groups';
 import CalendarUi from './../imports/ui/CalendarService/CalendarUi';
-
+import GroupsUi from '../imports/ui/ChatService/GroupsUi';
 const history = createHistory();
 const unauthenticatedPages = ['/', '/signup', '/login'];
 const authenticatedPages = ['/group', '/calendar'];
@@ -28,7 +27,7 @@ const routes = (
        <Route exact path="/" component={Landing} />
        <Route exact path="/login" component={Login} />
        <Route exact path="/signup" component={Signup} />
-       <Route exact path="/group" component={Groups} />
+       <Route exact path="/group" component={GroupsUi} />
        <Route exact path="/calendar" component={CalendarUi} />
        <Route exact path="*" component={NotFound} />
      </Switch>

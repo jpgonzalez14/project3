@@ -22,13 +22,14 @@ class Signup extends React.Component {
     console.log(password);
 
     let role = this.refs.role.value; 
-    let groups = [];
     Accounts.createUser({ username, email, password, profile: {currentGroup: {}, currentChannel: {}} }, (err) => {
       if (err) {
         this.setState({ error: err.reason });
       } else {
         this.setState({ error: '' });
-        Meteor.call('users.upsert', username, email, role, groups);
+        Meteor.call('users.insert', username, email, role, () => {
+          if (err) { console.log(err); return; }
+        });
       }
     });
   }
@@ -49,7 +50,7 @@ class Signup extends React.Component {
             <div className="form-group">
               <label>Email address</label>
               <input type="email" className="form-control" ref='email' name='email' aria-describedby="emailHelp" placeholder="Enter email" required />
-              <small className="form-text text-muted">We will never share your email with anyone else.</small>
+              <small className="form-text text-muted">We will never share your email with anyone else. (Except the NSA)</small>
             </div>
             <div className="form-group">
               <label>Password</label>
