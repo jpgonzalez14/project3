@@ -249,8 +249,4 @@ export default withTracker(() => {
     groups: userGroups,
     channels: userChannels
   };
-<<<<<<< HEAD
-})(Groups);
-=======
 })(GroupsUi);
->>>>>>> bffebeacf8190d151dbea1b898e4092143795c10
