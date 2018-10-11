@@ -29,7 +29,7 @@ class GroupsUi extends React.Component {
     };
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     Meteor.call('users.getUser', Meteor.userId(), (err, user) => {
       if (err) { console.log(err); return; }
       let username = user.name;
@@ -37,28 +37,6 @@ class GroupsUi extends React.Component {
       this.setState({username, role});
     });
     this.updateState();
-    /*
-    Meteor.call('users.getUser', Meteor.userId(), (err, ruser) => {
-      if (err) { console.log(err); return; }
-      this.setState({
-        user: { role: ruser.role, username: ruser.name },
-      });
-    });
-    Meteor.call('groups.getAll', (err, rgroups) => {
-      if (err) { console.log(err); return; }
-      let currentG = rgroups && rgroups.length > 0 ? rgroups[0] : {};
-      let groupID = currentG._id ? currentG._id : '';
-      Meteor.call('channels.getAll', groupID, (err, rchannels) => {
-        if (err) { console.log(err); return; }
-        let currentC = rchannels && rchannels.length > 0 ? rchannels[0] : {};
-        let channelID = currentC._id ? currentC._id : '';
-        Meteor.call('messages.getAll', channelID, (err, rmessages) => {
-          if (err) { console.log(err); return; }
-          this.setState({ groups: rgroups, groupChannels: rchannels, currentGroup: currentG, currentChannel: currentC, chatHistory: rmessages });
-        });
-      });
-    });
-    */
   }
 
   updateState() {
@@ -148,10 +126,13 @@ class GroupsUi extends React.Component {
   }
 
   enrollGroup(group) {
+    console.log('enroled');
     this.refs.groupSearch.value = '';
     let alreadyEnrolled = this.state.groups.find((elem) => elem._id === group._id);
+    console.log('enroled - '+alreadyEnrolled);
     if (alreadyEnrolled) { alert('Already enrolled!'); return }
     Meteor.call('groups.enrollUser', group._id, (err) => {
+      console.log('los llama?');
       if (err) { console.log(err); return; }
       this.state.groups.push(group);
       this.setCurrent(group);
@@ -168,8 +149,8 @@ class GroupsUi extends React.Component {
   }
 
   renderChannels() {
-    return (<ChannelsUi username={this.state.username} currentGroup={this.state.currentGroup} currentChannel={this.state.currentChannel} {...this.props} 
-      chatHistory={this.state.chatHistory} groupChannels={this.state.groupChannels} changeState={(ns) => this.changeState(ns)} addMessage={() => this.addMessage()} 
+    return (<ChannelsUi username={this.state.username} currentGroup={this.state.currentGroup} currentChannel={this.state.currentChannel} {...this.props}
+      chatHistory={this.state.chatHistory} groupChannels={this.state.groupChannels} changeState={(ns) => this.changeState(ns)} addMessage={() => this.addMessage()}
       updateState={() => this.updateState()} getID={(e) => this.getID(e)} getFirst={(a) => this.getFirst(a)} />);
   }
 
