@@ -112,9 +112,11 @@ class GroupsUi extends React.Component {
   }
 
   // Sobra??
-  addMessage() {
+  addMessage(m) {
     let chat = Messages.find({channelID: this.state.currentChannel._id}).fetch();
-    this.setState({chatHistory: chat});
+    this.state.chatHistory.push(m)
+
+    this.setState({});
   }
 
   searchGroup() {
@@ -130,7 +132,7 @@ class GroupsUi extends React.Component {
     console.log('enroled');
     this.refs.groupSearch.value = '';
     let alreadyEnrolled = this.state.groups.find((elem) => elem._id === group._id);
-    console.log('enroled - '+alreadyEnrolled);
+    console.log('enroled - '+ alreadyEnrolled);
     if (alreadyEnrolled) { alert('Already enrolled!'); return }
     Meteor.call('groups.enrollUser', group._id, (err) => {
       console.log('los llama?');
@@ -150,9 +152,9 @@ class GroupsUi extends React.Component {
   }
 
   renderChannels() {
-    return (<ChannelsUi username={this.state.username} currentGroup={this.state.currentGroup} currentChannel={this.state.currentChannel} {...this.props}
+    return (<ChannelsUi username={this.state.username} currentGroup={this.state.currentGroup} currentChannel={this.state.currentChannel}
       chatHistory={this.state.chatHistory} groupChannels={this.state.groupChannels} changeState={(ns) => this.changeState(ns)} addMessage={() => this.addMessage()}
-      updateState={() => this.updateState()} getID={(e) => this.getID(e)} getFirst={(a) => this.getFirst(a)} />);
+      updateState={() => this.updateState()} getID={(e) => this.getID(e)} getFirst={(a) => this.getFirst(a)} groups={this.state.groups}/>);
   }
 
   renderSearch() {
