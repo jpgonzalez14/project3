@@ -2,22 +2,25 @@ import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import {withTracker} from 'meteor/react-meteor-data';
 
+import { Groups } from './../../api/ChatService/Groups';
+import { Channels } from './../../api/ChatService/Channels';
+import { Messages } from './../../api/ChatService/Messages';
+
 import MessagesUi from './MessagesUi';
-import {Messages} from '../../api/ChatService/Messages';
-import {Channels} from '../../api/ChatService/Channels';
+
 
 export default class ChannelsUi extends React.Component {
 
   constructor(props) {
     super(props);
   }
-/*
+
   componentDidMount() {
     let chans = this.props.groupChannels;
     let currentC = this.props.getFirst(chans);
-    this.setState({ currentChannel: currentC });
+    this.props.changeState({ currentChannel: currentC });
   }
-*/
+
   createChannel() {
     let name = prompt('Enter Channel Name to Create');
     if (name === '') { alert('Please Enter a Name'); return; }

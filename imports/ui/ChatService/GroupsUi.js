@@ -10,7 +10,7 @@ import { Messages } from './../../api/ChatService/Messages';
 import { Users } from './../../api/User';
 
 import ChannelsUi from './ChannelsUi';
-import { relativeTimeThreshold } from 'moment';
+
 
 class GroupsUi extends React.Component {
 
@@ -63,8 +63,8 @@ class GroupsUi extends React.Component {
 
   updateState() {
     let groups = this.props.groups;
-    let groupChannels = this.props.channels;
     let currentGroup = this.getFirst(groups);
+    let groupChannels = this.props.channels.filter((a) => a.groupID === currentGroup._id);
     let currentChannel = this.getFirst(groupChannels);
     let channelID = this.getID(currentChannel);
     let chatHistory = Messages.find({ channelID }).fetch();
@@ -86,6 +86,7 @@ class GroupsUi extends React.Component {
       if (err) { console.log(err); return; }
       this.state.groups.push(rgroup);
       this.setState({ currentGroup: rgroup, groupChannels: [], currentChannel: {}, chatHistory: [] });
+      console.log(this.state);
     });
   }
 
@@ -129,7 +130,7 @@ class GroupsUi extends React.Component {
 
   changeState(newState) {
     this.setState(newState);
-    this.updateState();
+    //this.updateState();
   }
 
   // Sobra??
@@ -234,17 +235,17 @@ class GroupsUi extends React.Component {
 }
 
 
-export default withTracker(() => {
+export default groupTracker = withTracker(() => {
+  let userGroups = [];
+  let userChannels = [];
   Meteor.subscribe('usersAux');
   Meteor.subscribe('groups');
-  let userGroups = Groups.find({}).fetch();
+  Meteor.subscribe('channels');
+  Meteor.subscribe('messages');
+  userGroups = Groups.find({}).fetch();
   userGroups.forEach((g) => {
-    Meteor.subscribe('channels', g._id);
-  });
-  let userChannels = Channels.find({}).fetch();
-  userChannels.forEach((c) => {
-    Meteor.subscribe('messages', c._id);
-  });
+    userChannels.concat(Channels.find({groupID: g._id}).fetch());
+  })
   return {
     user: Meteor.user(),
     groups: userGroups,
