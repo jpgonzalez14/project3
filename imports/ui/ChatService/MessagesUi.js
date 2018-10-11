@@ -1,6 +1,7 @@
 import React from 'react';
+import {Messages} from '../../api/ChatService/Messages';
 
-export default class Messages extends React.Component {
+export default class MessagesUi extends React.Component {
 
   constructor(props) {
     super(props);
@@ -17,9 +18,9 @@ export default class Messages extends React.Component {
     if (m) {
       m = m.trim();
       let channelID = this.props.currentChannel._id;
-      Meteor.call('messages.insert', channelID, this.props.user.username, m, new Date(), (err, rmessage) => {
+      Meteor.call('messages.insert', channelID, this.props.username, m, new Date(), (err, rmessage) => {
         if (err) { console.log(err); return; }
-        this.props.addMessage(rmessage);
+        this.props.addMessage();
       });
     }
   }

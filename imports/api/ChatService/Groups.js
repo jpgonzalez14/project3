@@ -32,9 +32,7 @@ Meteor.methods({
         return Groups.findOne({_id: groupID});
     },
     'groups.remove'(groupName) {
-        Groups.remove({name: groupName, owner: this.userId});
-        let groups = Groups.find({ enrolled: this.userId });
-        return groups ? groups.fetch() : [];
+        return Groups.remove({name: groupName, owner: this.userId});
     },
     'groups.getAll'() {
         let userGroups = Groups.find({ enrolled: this.userId });

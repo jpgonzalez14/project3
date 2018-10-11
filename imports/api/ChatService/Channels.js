@@ -23,6 +23,7 @@ Meteor.methods({
 
         let channelID = Channels.insert(
             {
+                owner: this.userId,
                 groupID,
                 name,
                 description
@@ -30,9 +31,7 @@ Meteor.methods({
         return Channels.findOne({ _id: channelID });
     },
     'channels.remove'(channelName, groupID) {
-        Channels.remove({ name: channelName, groupID });
-        let groupChannels = Channels.find({ groupID });
-        return groupChannels ? groupChannels.fetch() : [];
+        return Channels.remove({ name: channelName, groupID, owner: this.userId });
     },
     'channels.removeAll'(groupID) {
         Channels.remove({ groupID });

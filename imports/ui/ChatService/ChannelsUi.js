@@ -2,27 +2,23 @@ import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import {withTracker} from 'meteor/react-meteor-data';
 
-import Messages from './Messages';
+import MessagesUi from './MessagesUi';
+import {Messages} from '../../api/ChatService/Messages';
+import {Channels} from '../../api/ChatService/Channels';
 
 export default class ChannelsUi extends React.Component {
 
   constructor(props) {
     super(props);
   }
-
+/*
   componentDidMount() {
-    let groupID = this.props.currentGroup;
-    if (groupID && groupID._id) {
-      Meteor.call('channels.getAll', groupID._id, (err, rchannels) => {
-        if (err) { console.log(err); return; }
-        let current = rchannels && rchannels.length > 0 ? rchannels[0] : {};
-        this.setState({ groupChannels: rchannels, currentChannel: current });
-      });
-    }
+    let chans = this.props.groupChannels;
+    let currentC = this.props.getFirst(chans);
+    this.setState({ currentChannel: currentC });
   }
-
+*/
   createChannel() {
-    let user = this.props.user;
     let name = prompt('Enter Channel Name to Create');
     if (name === '') { alert('Please Enter a Name'); return; }
     if (!name) return;
@@ -45,43 +41,35 @@ export default class ChannelsUi extends React.Component {
   deleteChannel() {
     let channelName = prompt('Enter Channel Name to Delete');
     if (channelName === '') {alert('Please Enter a Channel Name'); return;}
+    let chantoDelete = Channels.findOne({name: channelName});
+    if (!chantoDelete) {alert('Please Enter an Existing Channel Name'); return;}
     let currentG = this.props.currentGroup;
     if (channelName && currentG) {
-      Meteor.call('channels.remove', channelName, currentG._id, (err, rchannels) => {
+      Meteor.call('channels.remove', channelName, currentG._id, (err, deleted) => {
         if (err) { console.log(err); return; }
-        if (rchannels.length === this.props.groupChannels.length) {alert('Please Enter an Existing Channel Name'); return}
+        if (deleted === 0) {alert(`Could Not Delete Channel "${channelName}"\nYou do not have permission to do this!`); return}
         Meteor.call('messages.removeAll', this.props.currentChannel._id, (err) => {
-          let current = {};
-          let chat = [];
           if (err) { console.log(err); return; }
+          let currentC = this.props.currentChannel;
+          let chat = this.props.chatHistory;;
           if (channelName === this.props.currentChannel.name) {
-            current = rchannels && rchannels.length > 0 ? rchannels[0] : {};
-            let channelID = current._id ? current._id : '';
-            Meteor.call('messages.getAll', channelID, (err, rmessages) => {
-              if (err) { console.log(err); return; }
-              chat = rmessages;
-              this.props.changeState({ groupChannels: rchannels, currentChannel: current , chatHistory: chat});
-            });
+            currentC = this.props.getFirst(Channels.find({currentG}).fetch());
+            let channelID = this.props.getID(currentC);
+            chat = Messages.find({channelID}).fetch();
           }
-          else {
-            current = this.props.currentChannel;
-            chat = this.props.chatHistory;
-            this.props.changeState({ groupChannels: rchannels, currentChannel: current , chatHistory: chat});
-          }
+          this.props.changeState({ groupChannels: rchannels, currentChannel: currentC , chatHistory: chat});
         });
       });
     }
   }
 
   setCurrent(channel) {
-    Meteor.call('messages.getAll', channel._id, (err, rmessages) => {
-      if (err) { console.log(err); return; }
-      this.props.changeState({currentChannel: channel, chatHistory: rmessages});
-    })
+    let chat = Messages.find({channelID: channel._id}).fetch();
+    this.props.changeState({currentChannel: channel, chatHistory: chat});
   }
 
   renderMessages() {
-    return (<Messages {...this.props}/>);
+    return (<MessagesUi {...this.props}/>);
   }
 
   render() {

@@ -4,6 +4,15 @@ import { Meteor } from 'meteor/meteor';
 
 export const Users = new Mongo.Collection('usersAux');
 
+if (Meteor.isServer) {
+    Meteor.publish('usersAux', () => {
+        if (this.userId) {
+            return Users.findOne({userID: this.userId});
+        } else {
+            return [];
+        }
+    });
+}
 
 Meteor.methods({
     'users.insert'(name, email, role) {
