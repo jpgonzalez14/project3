@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import NavBar from './layout/NavBar';
 import Footer from './layout/Footer';
 
-
+//signup
 class Signup extends React.Component {
   constructor(props) {
     super(props);
