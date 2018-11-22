@@ -3,6 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+//Hay codigos que aveces no toca comen tarlos pues son faciles de entender, pero hay veces que e mejor comentar codigos 
+//COmplejos para que un tercero pueda entender bienq ue es lo que se esta haciendo o incluso la misma persona que lo 
+//escribio
+
 export default class NavBar extends React.Component {
   onLogout(){
     Accounts.logout();
